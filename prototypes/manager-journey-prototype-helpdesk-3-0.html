@@ -1,0 +1,3014 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Helpdesk 3.0 — Manager Journey Prototype</title>
+<style>
+  /* ====================================================================
+     AXIOM TOKENS — sourced from Visual Style Instructions v2
+     ==================================================================== */
+  :root {
+    /* Spacing scale */
+    --spacing-0: 0;
+    --spacing-xxxxs: 2px;
+    --spacing-xxxs:  4px;
+    --spacing-xxs:   6px;
+    --spacing-xs:    8px;
+    --spacing-sm:    12px;
+    --spacing-md:    16px;
+    --spacing-lg:    24px;
+    --spacing-xl:    32px;
+    --spacing-xxl:   48px;
+    --spacing-xxxl:  64px;
+
+    /* Radius */
+    --radius-xxxs: 4px;
+    --radius-xxs:  6px;
+    --radius-xs:   8px;
+    --radius-sm:   12px;
+    --radius-lg:   16px;
+
+    /* Core palette */
+    --grey-50:  #FAFAFA;
+    --grey-100: #EBECEF;
+    --grey-200: #D5D7DD;
+    --grey-300: #B3B8C1;
+    --grey-400: #8992A0;
+    --grey-500: #6E7686;
+    --grey-600: #5C6370;
+    --black:    #1E242E;
+
+    --purple-50:  #F1ECFF;
+    --purple-100: #DAD0FF;
+    --purple-200: #C4B7FF;
+    --purple-300: #B7A7FF;
+    --purple-400: #9B7BFF;
+    --purple-500: #7E55F6;
+    --purple-600: #754DEC;
+    --purple-700: #683FCF;
+    --purple-800: #4C3C9D;
+
+    --green-50:  #E9FBF5;
+    --green-300: #74DCBA;
+    --green-500: #32C898;
+    --green-800: #147656;
+
+    --orange-50:  #FFF5EE;
+    --orange-300: #FFBB8E;
+    --orange-500: #FF9A57;
+    --orange-800: #A94F13;
+
+    --red-50:  #FFECEF;
+    --red-500: #FF425D;
+    --red-600: #DA7A67;
+    --red-700: #D90B28;
+
+    --coral-100: #FFEAE6;
+    --coral-500: #FF9780;
+    --coral-800: #984939;
+
+    --blue-50:  #F5F9FF;
+    --blue-200: #B0D1FF;
+    --blue-600: #0D6CF2;
+    --blue-900: #073C85;
+
+    --teal-50:  #E8F5F8;
+    --fuchsia-50: #FEE1F9;
+    --yellow-50:  #FEF8E7;
+
+    /* Semantic — Content */
+    --content-neutral-default:   var(--black);
+    --content-neutral-secondary: var(--grey-600);
+    --content-neutral-tertiary:  var(--grey-500);
+    --content-neutral-placeholder: var(--grey-400);
+    --content-accent-default:    var(--purple-700);
+    --content-selected-accent:   var(--purple-700);
+    --content-success-default:   var(--green-800);
+    --content-warning-default:   var(--orange-800);
+    --content-error-default:     var(--red-700);
+    --content-error-primary:     var(--red-700);
+    --content-inverted-default:  #FFFFFF;
+    --content-inverted-accent:   var(--purple-300);
+    --content-additional-purple: var(--purple-800);
+    --content-additional-coral:  var(--coral-800);
+
+    /* Semantic — Surface */
+    --surface-accent-default:    var(--purple-50);
+    --surface-accent-primary:    var(--purple-500);
+    --surface-success-default:   var(--green-50);
+    --surface-warning-default:   var(--orange-50);
+    --surface-error-default:     var(--red-50);
+    --surface-error-primary:     #E8304B;
+    --surface-neutral-primary:   var(--grey-50);
+    --surface-neutral-secondary: var(--grey-100);
+    --surface-neutral-tertiary:  var(--grey-200);
+    --surface-inverted-default:  var(--black);
+    --surface-button-secondary:  rgba(255, 255, 255, 0.5);
+    --surface-additional-purple: var(--purple-50);
+    --surface-additional-coral:  var(--coral-100);
+
+    /* Semantic — Border */
+    --border-neutral-default:   rgba(0, 0, 0, 0.08);
+    --border-neutral-secondary: rgba(0, 10, 41, 0.56);
+    --border-neutral-tertiary:  rgba(103, 113, 131, 0.5);
+    --border-accent-default:    var(--purple-500);
+    --border-success-default:   var(--green-300);
+    --border-warning-default:   var(--orange-300);
+    --border-error-default:     var(--red-700);
+    --border-additional-purple: var(--purple-200);
+
+    /* Elevation */
+    --elevation-neutral-bg:      var(--grey-50);
+    --elevation-neutral-default: #FFFFFF;
+    --elevation-neutral-mid:     #FFFFFF;
+    --elevation-neutral-high:    #FFFFFF;
+
+    /* Interaction */
+    --hover-default:           rgba(27, 35, 50, 0.03);
+    --hover-input:             rgba(0, 0, 0, 0.01);
+    --pressed-default:         rgba(34, 44, 63, 0.07);
+    --focus:                   var(--purple-500);
+    --inverted-hover:          rgba(255, 255, 255, 0.08);
+    --inverted-pressed-default: rgba(255, 255, 255, 0.12);
+
+    /* Effects */
+    --effects-shadow-container: 0px 2px 20px 0px rgba(0, 0, 0, 0.04);
+    --effects-shadow-component: 0px 2px 3px 0px rgba(0, 0, 0, 0.05);
+    --effects-inner-shadow:     inset 1px 2px 3px 0px rgba(0, 0, 0, 0.06);
+    --effects-inner-light:      inset 1px 2px 3px 0px rgba(255, 255, 255, 0.2);
+
+    /* Dataviz / heat */
+    --dataviz-purple:  var(--purple-500);
+    --dataviz-blue:    var(--blue-600);
+    --dataviz-green:   var(--green-500);
+    --dataviz-coral:   var(--coral-500);
+    --heat-2:          var(--purple-100);
+    --heat-4:          var(--purple-300);
+    --heat-6:          var(--purple-500);
+    --heat-8:          var(--purple-700);
+
+    /* AI gradient */
+    --ai-content: linear-gradient(135deg, var(--coral-500) 0%, var(--purple-500) 100%);
+  }
+
+  /* ====================================================================
+     RESET + BASE
+     ==================================================================== */
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-feature-settings: 'kern' 0, 'lnum' 1, 'tnum' 1;
+    color: var(--content-neutral-default);
+    background: var(--elevation-neutral-bg);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow: hidden;
+    height: 100vh;
+  }
+  button { font-family: inherit; cursor: pointer; border: none; background: transparent; padding: 0; }
+  input, textarea, select { font-family: inherit; font-feature-settings: 'lnum' 1, 'tnum' 1; }
+  a { color: inherit; text-decoration: none; }
+
+  /* Axiom typography */
+  .heading-xxl { font-size: 24px; line-height: 32px; font-weight: 600; letter-spacing: 0; }
+  .heading-xl  { font-size: 20px; line-height: 32px; font-weight: 600; letter-spacing: 0; }
+  .heading-lg  { font-size: 18px; line-height: 28px; font-weight: 600; }
+  .heading-md  { font-size: 16px; line-height: 24px; font-weight: 600; }
+  .heading-sm  { font-size: 14px; line-height: 20px; font-weight: 600; }
+  .bold-md     { font-size: 14px; line-height: 20px; font-weight: 600; }
+  .medium-md   { font-size: 14px; line-height: 20px; font-weight: 500; }
+  .regular-md  { font-size: 14px; line-height: 20px; font-weight: 400; }
+  .bold-sm     { font-size: 12px; line-height: 16px; font-weight: 600; letter-spacing: 0.12px; }
+  .medium-sm   { font-size: 12px; line-height: 16px; font-weight: 500; letter-spacing: 0.12px; }
+  .regular-sm  { font-size: 12px; line-height: 16px; font-weight: 400; letter-spacing: 0.12px; color: var(--content-neutral-secondary); }
+  .bold-xs     { font-size: 10px; line-height: 14px; font-weight: 600; }
+  .regular-xs  { font-size: 10px; line-height: 14px; font-weight: 400; }
+
+  /* ====================================================================
+     PROTOTYPE STRIP — top progress bar
+     ==================================================================== */
+  .proto-topbar {
+    position: fixed; top: 0; left: 0; right: 0; height: 40px;
+    background: var(--elevation-neutral-bg);
+    border-bottom: 1px solid var(--border-neutral-default);
+    z-index: 1000;
+    display: flex; align-items: center;
+    padding: 0 var(--spacing-md);
+    gap: var(--spacing-md);
+  }
+  .proto-topbar .brand {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 12px; font-weight: 600;
+    color: var(--content-neutral-default);
+  }
+  .proto-topbar .crumb { color: var(--content-neutral-tertiary); font-size: 11px; }
+  .proto-topbar .crumb b { color: var(--content-neutral-default); font-weight: 500; }
+  .proto-progress { margin-left: auto; display: flex; align-items: center; gap: 4px; }
+  .proto-step {
+    display: flex; align-items: center; gap: 6px;
+    padding: 4px 10px;
+    border-radius: var(--radius-xxs);
+    font-size: 11px; font-weight: 500;
+    color: var(--content-neutral-tertiary);
+    transition: background 150ms;
+  }
+  .proto-step:hover { background: var(--hover-default); color: var(--content-neutral-default); }
+  .proto-step.active {
+    background: var(--surface-accent-default);
+    color: var(--content-selected-accent);
+  }
+  .proto-step.done { color: var(--content-success-default); }
+  .proto-step .num {
+    width: 16px; height: 16px; border-radius: 50%;
+    background: var(--surface-neutral-secondary);
+    color: var(--content-neutral-secondary);
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 9px; font-weight: 600;
+  }
+  .proto-step.active .num { background: var(--content-selected-accent); color: white; }
+  .proto-step.done .num { background: var(--content-success-default); color: white; }
+  .proto-divider { width: 8px; height: 1px; background: var(--border-neutral-default); }
+
+  /* Screen viewport */
+  .viewport {
+    position: fixed; top: 40px; left: 0; right: 0; bottom: 0;
+    overflow: hidden;
+    background: var(--elevation-neutral-bg);
+  }
+  .screen {
+    position: absolute; inset: 0;
+    overflow: hidden;
+    opacity: 0; pointer-events: none;
+    transition: opacity 220ms ease;
+  }
+  .screen.is-active { opacity: 1; pointer-events: auto; }
+
+  /* ====================================================================
+     APP SHELL — sidebar (48px) + content container (rounded white)
+     Per Visual Style spec, sidebar background = page background.
+     8px gap on all sides of content container.
+     ==================================================================== */
+  .app {
+    display: flex;
+    height: 100%;
+    overflow: hidden;
+  }
+  .sidebar {
+    width: 48px;
+    background: var(--elevation-neutral-bg);
+    display: flex; flex-direction: column; align-items: center;
+    padding: 12px 0;
+    gap: 4px;
+    flex-shrink: 0;
+  }
+  .sb-icon-btn {
+    width: 32px; height: 32px;
+    border-radius: var(--radius-xs);
+    color: var(--content-neutral-secondary);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    position: relative;
+    transition: background 150ms ease, color 150ms ease;
+  }
+  .sb-icon-btn:hover { background: var(--hover-default); color: var(--content-neutral-default); }
+  .sb-icon-btn.active { background: var(--hover-default); color: var(--content-neutral-default); }
+  .sb-icon-btn .badge {
+    position: absolute; top: 4px; right: 4px;
+    min-width: 14px; height: 14px;
+    padding: 0 3px;
+    border-radius: 999px;
+    background: var(--red-500);
+    color: white;
+    font-size: 9px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .sb-spacer { flex: 1; }
+  .sb-copilot {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--coral-500) 0%, var(--purple-500) 100%);
+    display: flex; align-items: center; justify-content: center;
+    color: white;
+    position: relative;
+    cursor: pointer;
+  }
+  .sb-copilot::after {
+    content: ''; position: absolute; bottom: -1px; right: -1px;
+    width: 8px; height: 8px; background: var(--green-500); border-radius: 4px;
+    border: 2px solid var(--elevation-neutral-bg);
+  }
+  .sb-profile {
+    width: 28px; height: 28px; border-radius: 14px;
+    background: var(--surface-accent-default);
+    color: var(--content-accent-default);
+    font-size: 11px; font-weight: 600;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    position: relative;
+  }
+  .sb-profile::after {
+    content: ''; position: absolute; bottom: -1px; right: -1px;
+    width: 8px; height: 8px; background: var(--green-500); border-radius: 4px;
+    border: 2px solid var(--elevation-neutral-bg);
+  }
+
+  .main-area {
+    flex: 1;
+    display: flex;
+    padding: 8px;
+    padding-left: 8px;
+    background: var(--elevation-neutral-bg);
+    overflow: hidden;
+  }
+  .content-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: var(--elevation-neutral-default);
+    border-radius: 16px 16px 0 0;
+    border: 1px solid var(--border-neutral-default);
+    border-bottom: none;
+    overflow: hidden;
+  }
+
+  /* Sub-sidebar for Tickets product (matches Layout C pattern) */
+  .content-container.has-subnav {
+    flex-direction: row;
+  }
+  .subnav {
+    width: 220px;
+    background: var(--elevation-neutral-default);
+    border-right: 1px solid var(--border-neutral-default);
+    display: flex; flex-direction: column;
+    flex-shrink: 0;
+  }
+  .subnav-header {
+    padding: 16px 16px 12px;
+    display: flex; align-items: center; gap: 8px;
+    border-bottom: 1px solid var(--border-neutral-default);
+  }
+  .subnav-header .product-icon {
+    width: 24px; height: 24px; border-radius: var(--radius-xs);
+    background: var(--blue-50);
+    color: var(--blue-600);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .subnav-header .product-name { font-size: 14px; font-weight: 600; flex: 1; }
+  .subnav-header .chev { color: var(--content-neutral-tertiary); }
+
+  .subnav-account {
+    margin: 12px;
+    padding: 8px 10px;
+    background: var(--elevation-neutral-default);
+    border: 1px solid var(--border-neutral-default);
+    border-radius: var(--radius-xs);
+    display: flex; align-items: center; gap: 8px;
+    box-shadow: var(--effects-shadow-component);
+    cursor: pointer;
+  }
+  .subnav-account .logo {
+    width: 20px; height: 20px;
+    border-radius: var(--radius-xxxs);
+    background: linear-gradient(135deg, #FB923C 0%, #F97316 100%);
+    color: white; font-size: 10px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .subnav-account .name { font-size: 13px; font-weight: 500; flex: 1; }
+  .subnav-account .status { width: 8px; height: 8px; border-radius: 4px; background: var(--green-500); }
+
+  .subnav-body {
+    flex: 1; overflow-y: auto;
+    padding: 4px 8px 8px;
+  }
+  .subnav-section { margin-top: 4px; }
+  .subnav-section-title {
+    padding: 8px 12px 4px;
+    font-size: 11px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--content-neutral-tertiary);
+  }
+  .subnav-item {
+    padding: 8px 12px;
+    display: flex; align-items: center; gap: 10px;
+    border-radius: var(--radius-xxs);
+    font-size: 13px;
+    color: var(--content-neutral-default);
+    cursor: pointer;
+    transition: background 120ms;
+    position: relative;
+  }
+  .subnav-item:hover { background: var(--hover-default); }
+  .subnav-item.active {
+    background: var(--surface-accent-default);
+    color: var(--content-selected-accent);
+    font-weight: 500;
+  }
+  .subnav-item .ico {
+    width: 16px; height: 16px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--content-neutral-secondary);
+    flex-shrink: 0;
+  }
+  .subnav-item.active .ico { color: var(--content-selected-accent); }
+  .subnav-item .count {
+    margin-left: auto;
+    background: var(--surface-neutral-secondary);
+    color: var(--content-neutral-secondary);
+    padding: 0 7px; border-radius: 999px;
+    font-size: 11px; font-weight: 500;
+  }
+  .subnav-item .count.warning {
+    background: var(--surface-warning-default);
+    color: var(--content-warning-default);
+  }
+  .subnav-item .count.ai {
+    background: var(--surface-accent-default);
+    color: var(--content-accent-default);
+  }
+  .subnav-item .new-pill {
+    margin-left: auto;
+    background: var(--surface-accent-default);
+    color: var(--content-accent-default);
+    padding: 0 6px; border-radius: 999px;
+    font-size: 10px; font-weight: 600;
+  }
+
+  .subnav-group { }
+  .subnav-group-toggle {
+    padding: 8px 12px;
+    display: flex; align-items: center; gap: 10px;
+    border-radius: var(--radius-xxs);
+    font-size: 13px;
+    color: var(--content-neutral-default);
+    cursor: pointer;
+    transition: background 120ms;
+  }
+  .subnav-group-toggle:hover { background: var(--hover-default); }
+  .subnav-group-toggle .ico {
+    width: 16px; height: 16px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--content-neutral-secondary);
+  }
+  .subnav-group-toggle .chev {
+    margin-left: auto;
+    color: var(--content-neutral-tertiary);
+    transition: transform 150ms;
+  }
+  .subnav-group.open .subnav-group-toggle .chev { transform: rotate(180deg); }
+  .subnav-group-children { display: none; padding-left: 26px; }
+  .subnav-group.open .subnav-group-children { display: block; }
+  .subnav-sub {
+    padding: 6px 12px;
+    display: flex; align-items: center; gap: 8px;
+    border-radius: var(--radius-xxs);
+    font-size: 13px;
+    color: var(--content-neutral-default);
+    cursor: pointer;
+  }
+  .subnav-sub:hover { background: var(--hover-default); }
+  .subnav-sub.active {
+    background: var(--surface-accent-default);
+    color: var(--content-selected-accent);
+    font-weight: 500;
+  }
+
+  /* Main column inside container */
+  .main {
+    flex: 1;
+    display: flex; flex-direction: column;
+    min-width: 0;
+    overflow: hidden;
+  }
+  /* PageHeader */
+  .page-header {
+    background: var(--elevation-neutral-default);
+  }
+  .page-header-title {
+    height: 56px;
+    padding: 16px 24px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .page-header-title .back-btn {
+    width: 24px; height: 24px;
+    color: var(--content-neutral-default);
+    display: flex; align-items: center; justify-content: center;
+    border-radius: var(--radius-xxs);
+    cursor: pointer;
+  }
+  .page-header-title .back-btn:hover { background: var(--hover-default); }
+  .page-header-title h1 {
+    margin: 0;
+    font-size: 20px; font-weight: 600;
+    line-height: 32px;
+    color: var(--content-neutral-default);
+    letter-spacing: 0;
+  }
+  .page-header-actions { margin-left: auto; display: flex; gap: 8px; align-items: center; }
+  .page-header-tabs {
+    padding: 0 24px;
+    display: flex; gap: 32px;
+    border-bottom: 1px solid var(--border-neutral-default);
+  }
+  .tab {
+    padding: 0 0 12px;
+    font-size: 14px; font-weight: 400;
+    color: var(--content-neutral-tertiary);
+    cursor: pointer;
+    border-bottom: 1.5px solid transparent;
+    margin-bottom: -1px;
+    transition: color 120ms;
+  }
+  .tab:hover { color: var(--content-neutral-secondary); }
+  .tab.active {
+    color: var(--content-neutral-default);
+    font-weight: 600;
+    border-bottom-color: var(--content-neutral-default);
+  }
+  .page-header-filters {
+    padding: 8px 24px;
+    display: flex; gap: 8px; align-items: center;
+  }
+  .page-header-count {
+    padding: 8px 24px;
+    display: flex; align-items: center;
+    font-size: 12px;
+    color: var(--content-neutral-secondary);
+    letter-spacing: 0.12px;
+  }
+  .page-header-count .actions { margin-left: auto; display: flex; gap: 8px; }
+
+  /* Page body */
+  .page-body {
+    flex: 1;
+    overflow-y: auto;
+  }
+  .page-body.padded { padding: 24px; }
+  .page-body.padded > * + * { margin-top: 16px; }
+
+  /* ====================================================================
+     BUTTONS
+     ==================================================================== */
+  .btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    height: 32px;
+    padding: 0 14px;
+    border-radius: var(--radius-xxs);
+    border: 1px solid var(--border-neutral-default);
+    background: var(--surface-button-secondary);
+    font-size: 14px; font-weight: 600;
+    color: var(--content-neutral-default);
+    box-shadow: var(--effects-shadow-component);
+    transition: background 120ms;
+    line-height: 1;
+  }
+  .btn:hover { background: var(--hover-default); }
+  .btn-primary {
+    background: var(--surface-inverted-default);
+    color: var(--content-inverted-default);
+    border-color: var(--surface-inverted-default);
+  }
+  .btn-primary:hover { background: #000; }
+  .btn-destructive {
+    background: var(--surface-error-primary);
+    color: white;
+    border-color: var(--surface-error-primary);
+  }
+  .btn-tertiary {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    color: var(--content-neutral-secondary);
+  }
+  .btn-tertiary:hover { background: var(--hover-default); color: var(--content-neutral-default); }
+  .btn-sm { height: 24px; padding: 0 10px; font-size: 12px; }
+  .btn-icon { width: 32px; padding: 0; justify-content: center; }
+  .btn-icon.btn-sm { width: 24px; }
+
+  /* ====================================================================
+     TAG / BADGE / DOT
+     ==================================================================== */
+  .tag {
+    display: inline-flex; align-items: center; gap: 4px;
+    height: 24px;
+    padding: 0 6px;
+    border-radius: var(--radius-xxxs);
+    background: var(--surface-neutral-secondary);
+    color: var(--content-neutral-default);
+    font-size: 12px; font-weight: 600;
+    letter-spacing: 0.12px;
+  }
+  .tag.accent  { background: var(--surface-accent-default); color: var(--content-additional-purple); }
+  .tag.success { background: var(--surface-success-default); color: var(--content-success-default); }
+  .tag.warning { background: var(--surface-warning-default); color: var(--content-warning-default); }
+  .tag.error   { background: var(--surface-error-default); color: var(--content-error-default); }
+  .tag-sm { height: 20px; padding: 0 6px; font-size: 10px; }
+
+  .dot { display: inline-block; width: 8px; height: 8px; border-radius: 4px; background: var(--grey-400); }
+  .dot.success { background: var(--green-500); }
+  .dot.warning { background: var(--orange-500); }
+  .dot.error   { background: var(--red-500); }
+  .dot.accent  { background: var(--purple-500); }
+
+  /* ====================================================================
+     CARDS (mid elevation)
+     ==================================================================== */
+  .card {
+    background: var(--elevation-neutral-mid);
+    border: 1px solid var(--border-neutral-default);
+    border-radius: var(--radius-sm);
+    padding: 24px;
+    box-shadow: var(--effects-shadow-container);
+  }
+  .card-flat {
+    background: var(--elevation-neutral-mid);
+    border: 1px solid var(--border-neutral-default);
+    border-radius: var(--radius-sm);
+  }
+
+  /* Metric card */
+  .metric-grid {
+    display: flex; gap: 16px;
+  }
+  .metric-card {
+    flex: 1;
+    background: var(--elevation-neutral-mid);
+    border: 1px solid var(--border-neutral-default);
+    border-radius: var(--radius-sm);
+    padding: 24px;
+    box-shadow: var(--effects-shadow-container);
+  }
+  .metric-card .label {
+    font-size: 12px; font-weight: 500;
+    color: var(--content-neutral-secondary);
+    letter-spacing: 0.12px;
+    margin-bottom: 2px;
+  }
+  .metric-card .value {
+    font-size: 24px; font-weight: 600;
+    line-height: 32px;
+    color: var(--content-neutral-default);
+    display: flex; align-items: center; gap: 4px;
+  }
+  .metric-card .delta {
+    display: inline-flex; align-items: center; gap: 2px;
+    padding: 1px 4px 1px 2px;
+    border-radius: var(--radius-xxxs);
+    font-size: 12px; font-weight: 500;
+    letter-spacing: 0.12px;
+  }
+  .delta.up { color: var(--content-success-default); background: var(--surface-success-default); }
+  .delta.down { color: var(--content-error-default); background: var(--surface-error-default); }
+  .delta svg { width: 12px; height: 12px; }
+  .metric-card .meta {
+    margin-top: 4px;
+    font-size: 12px; color: var(--content-neutral-secondary); letter-spacing: 0.12px;
+  }
+
+  /* ====================================================================
+     COPILOT BANNER (gradient inline card)
+     ==================================================================== */
+  .copilot-banner {
+    border-radius: var(--radius-xs);
+    border: 0.5px solid var(--coral-500);
+    background: linear-gradient(
+      175.76deg,
+      rgba(253, 159, 138, 0.15) 12.54%,
+      rgba(231, 150, 255, 0.02) 34.83%,
+      rgba(231, 150, 255, 0.02) 49.76%,
+      rgba(160, 132, 225, 0.15) 73.92%,
+      rgba(127, 28, 213, 0.15) 88.53%
+    );
+    padding: 8px 8px 8px 12px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .copilot-banner .ai-icon {
+    width: 20px; height: 20px;
+    background: var(--ai-content);
+    -webkit-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='black'><path d='M12 2l1.5 6.5L20 10l-6.5 1.5L12 18l-1.5-6.5L4 10l6.5-1.5z'/></svg>") no-repeat center / contain;
+            mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='black'><path d='M12 2l1.5 6.5L20 10l-6.5 1.5L12 18l-1.5-6.5L4 10l6.5-1.5z'/></svg>") no-repeat center / contain;
+    flex-shrink: 0;
+  }
+  .copilot-banner .copy {
+    flex: 1;
+    font-size: 12px;
+    color: var(--content-neutral-default);
+    letter-spacing: 0.12px;
+    line-height: 16px;
+  }
+  .copilot-banner .copy b { font-weight: 600; }
+  .copilot-banner .actions { display: flex; gap: 8px; }
+  .copilot-banner .btn { height: 24px; padding: 0 10px; font-size: 12px; }
+
+  /* ====================================================================
+     TABLE (Layout B)
+     ==================================================================== */
+  .data-table {
+    width: 100%;
+    background: var(--elevation-neutral-mid);
+    border: 1px solid var(--border-neutral-default);
+    border-radius: var(--radius-xs);
+    overflow: hidden;
+  }
+  .data-table-head {
+    display: grid;
+    background: var(--surface-neutral-primary);
+    border-bottom: 1px solid var(--surface-neutral-secondary);
+    height: 40px;
+    align-items: center;
+  }
+  .data-table-head > div {
+    padding: 8px 16px;
+    font-size: 12px; font-weight: 600;
+    color: var(--content-neutral-default);
+    letter-spacing: 0.12px;
+    display: flex; align-items: center; gap: 4px;
+  }
+  .data-table-row {
+    display: grid;
+    background: var(--elevation-neutral-mid);
+    border-bottom: 1px solid var(--border-neutral-default);
+    transition: background 120ms;
+    cursor: pointer;
+    align-items: center;
+  }
+  .data-table-row:last-child { border-bottom: none; }
+  .data-table-row:hover { background: var(--hover-default); }
+  .data-table-row.alert { background: var(--surface-warning-default); }
+  .data-table-row.alert:hover { background: #FFF0E2; }
+  .data-table-row > div {
+    padding: 10px 16px;
+    font-size: 14px; font-weight: 400;
+    color: var(--content-neutral-default);
+  }
+  .data-table-row .primary-cell { font-weight: 500; display: flex; align-items: center; gap: 8px; }
+
+  /* SLA progress bar */
+  .sla-bar {
+    height: 6px;
+    background: var(--surface-neutral-secondary);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .sla-bar > span {
+    display: block; height: 100%;
+    background: var(--green-500);
+  }
+  .sla-bar > span.warning { background: var(--orange-500); }
+  .sla-bar > span.error { background: var(--red-500); }
+
+  /* ====================================================================
+     DIFF (for Gaia proposed changes)
+     ==================================================================== */
+  .diff-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 16px;
+  }
+  .diff-col {
+    background: var(--elevation-neutral-mid);
+    border: 1px solid var(--border-neutral-default);
+    border-radius: var(--radius-xs);
+    padding: 14px 16px;
+  }
+  .diff-col.after {
+    background: var(--surface-accent-default);
+    border-color: var(--border-additional-purple);
+  }
+  .diff-col .diff-label {
+    font-size: 10px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--content-neutral-tertiary);
+    margin-bottom: 8px;
+  }
+  .diff-col.after .diff-label { color: var(--content-accent-default); }
+  .diff-line {
+    font-size: 13px; line-height: 18px;
+    margin-bottom: 4px;
+  }
+  .diff-line .meta { color: var(--content-neutral-tertiary); }
+
+  /* ====================================================================
+     CONVERSATIONAL ONBOARDING (Gaia, fullscreen)
+     ==================================================================== */
+  .conv-shell {
+    display: flex;
+    height: 100%;
+    background: var(--elevation-neutral-default);
+    position: relative;
+  }
+  .conv-shell .sidebar { background: var(--elevation-neutral-default); }
+  .conv-finish {
+    position: absolute; top: 16px; right: 24px;
+    height: 32px; padding: 0 14px;
+    background: transparent;
+    color: var(--content-neutral-default);
+    font-size: 13px; font-weight: 500;
+    border-radius: var(--radius-xxs);
+    z-index: 10;
+  }
+  .conv-finish:hover { background: var(--hover-default); }
+
+  .conv-body {
+    flex: 1; overflow-y: auto;
+    padding: 64px 0 40px;
+    display: flex;
+  }
+  .conv-inner {
+    width: 100%;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 32px;
+    display: flex; flex-direction: column; gap: 16px;
+  }
+  .conv-msg {
+    font-size: 14px;
+    line-height: 22px;
+    color: var(--content-neutral-default);
+  }
+  .conv-msg p { margin: 0 0 12px; }
+  .conv-msg p:last-child { margin-bottom: 0; }
+  .conv-msg.from-user {
+    align-self: flex-end;
+    background: var(--surface-neutral-secondary);
+    padding: 8px 14px;
+    border-radius: var(--radius-md);
+    border-bottom-right-radius: var(--radius-xxxs);
+    max-width: 70%;
+  }
+  .conv-source-pill {
+    display: inline-flex; align-items: center; gap: 8px;
+    height: 28px;
+    padding: 0 12px;
+    background: var(--elevation-neutral-default);
+    border: 1px solid var(--border-neutral-default);
+    border-radius: 14px;
+    font-size: 12px;
+    color: var(--content-neutral-secondary);
+    letter-spacing: 0.12px;
+    width: max-content;
+    cursor: pointer;
+  }
+  .conv-source-pill .check {
+    width: 14px; height: 14px;
+    background: var(--green-500);
+    color: white;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  /* Conversation card (info — for Brand voice, knowledge, queues, signals) */
+  .conv-card {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 16px;
+    background: var(--elevation-neutral-mid);
+    border: 1px solid var(--border-neutral-default);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--effects-shadow-container);
+  }
+  .conv-card .icon-box {
+    width: 36px; height: 36px;
+    background: var(--surface-accent-default);
+    color: var(--content-accent-default);
+    border-radius: var(--radius-xs);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .conv-card .body { flex: 1; }
+  .conv-card .body .label { font-size: 13px; font-weight: 600; color: var(--content-neutral-default); }
+  .conv-card .body .desc { font-size: 12px; color: var(--content-neutral-secondary); margin-top: 2px; }
+  .conv-card .actions { display: flex; gap: 6px; align-items: center; }
+  .conv-card-list { display: flex; flex-direction: column; gap: 8px; }
+
+  .ready-pill {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 1px 8px;
+    border-radius: 999px;
+    font-size: 10px; font-weight: 600;
+    background: var(--surface-success-default);
+    color: var(--content-success-default);
+  }
+  .ready-pill::before {
+    content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--green-500);
+  }
+
+  /* Question card (multi-select) */
+  .conv-question {
+    background: var(--elevation-neutral-mid);
+    border: 1px solid var(--border-neutral-default);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    box-shadow: var(--effects-shadow-container);
+  }
+  .q-head {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border-neutral-default);
+    font-size: 14px; font-weight: 600;
+  }
+  .conv-option {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border-neutral-default);
+    display: flex; align-items: flex-start; gap: 12px;
+    cursor: pointer;
+    transition: background 120ms;
+  }
+  .conv-option:last-child { border-bottom: none; }
+  .conv-option:hover { background: var(--hover-default); }
+  .conv-option.recommended { background: var(--surface-accent-default); }
+  .conv-option.recommended:hover { background: var(--purple-100); }
+  .conv-option .num {
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    background: var(--surface-neutral-secondary);
+    color: var(--content-neutral-secondary);
+    font-size: 11px; font-weight: 600;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .conv-option.recommended .num {
+    background: var(--surface-accent-primary); color: white;
+  }
+  .conv-option .opt-body { flex: 1; }
+  .conv-option .opt-label {
+    font-size: 14px; font-weight: 500;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .conv-option .opt-desc {
+    font-size: 12px; color: var(--content-neutral-secondary);
+    margin-top: 2px;
+  }
+  .recommended-tag {
+    background: var(--surface-accent-default);
+    color: var(--content-accent-default);
+    padding: 1px 8px;
+    border-radius: 999px;
+    font-size: 10px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.06em;
+  }
+  .q-input {
+    padding: 12px 16px;
+    display: flex; align-items: center; gap: 10px;
+    color: var(--content-neutral-tertiary);
+  }
+  .q-input input {
+    flex: 1; border: none; outline: none;
+    background: transparent; font-size: 13px; color: var(--content-neutral-default);
+  }
+  .q-input input::placeholder { color: var(--content-neutral-placeholder); }
+
+  /* Reviewed bar (between conversation turns) */
+  .reviewed-bar {
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 12px;
+    color: var(--content-neutral-tertiary);
+    font-size: 12px; letter-spacing: 0.12px;
+    border-bottom: 1px solid var(--border-neutral-default);
+    margin: 8px 0;
+  }
+  .reviewed-bar .check {
+    width: 14px; height: 14px; border-radius: 50%;
+    background: var(--green-500); color: white;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  /* ====================================================================
+     GAIA SIDE PANEL (full copilot opened on right)
+     ==================================================================== */
+  .gaia-panel {
+    width: 400px;
+    background: var(--elevation-neutral-default);
+    border-left: 1px solid var(--border-neutral-default);
+    display: flex; flex-direction: column;
+    flex-shrink: 0;
+    overflow: hidden;
+  }
+  .gaia-header {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border-neutral-default);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .gaia-spark {
+    width: 24px; height: 24px;
+    background: linear-gradient(135deg, var(--coral-500) 0%, var(--purple-500) 100%);
+    border-radius: var(--radius-xs);
+    display: flex; align-items: center; justify-content: center;
+    color: white;
+  }
+  .gaia-header .title { font-weight: 600; font-size: 14px; flex: 1; }
+  .gaia-body {
+    flex: 1; overflow-y: auto;
+    padding: 16px;
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  .gaia-msg { display: flex; gap: 8px; max-width: 100%; }
+  .gaia-msg.from-user { justify-content: flex-end; }
+  .gaia-msg-bubble {
+    padding: 10px 14px;
+    border-radius: var(--radius-sm);
+    font-size: 13px; line-height: 20px;
+    max-width: 86%;
+  }
+  .gaia-msg.from-gaia .gaia-msg-bubble {
+    background: var(--surface-neutral-secondary);
+    border-bottom-left-radius: var(--radius-xxxs);
+  }
+  .gaia-msg.from-user .gaia-msg-bubble {
+    background: var(--surface-inverted-default);
+    color: white;
+    border-bottom-right-radius: var(--radius-xxxs);
+  }
+  .gaia-input {
+    border-top: 1px solid var(--border-neutral-default);
+    padding: 12px;
+  }
+  .gaia-input-row {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--elevation-neutral-default);
+    border: 1px solid var(--border-neutral-default);
+    border-radius: var(--radius-xs);
+    padding: 4px 4px 4px 12px;
+    height: 40px;
+  }
+  .gaia-input-row:focus-within {
+    border-color: var(--border-neutral-secondary);
+    box-shadow: var(--effects-inner-shadow);
+  }
+  .gaia-input-row input {
+    flex: 1; border: none; background: transparent; outline: none;
+    font-size: 14px; color: var(--content-neutral-default);
+  }
+  .gaia-input-row input::placeholder { color: var(--content-neutral-placeholder); }
+  .gaia-send {
+    width: 28px; height: 28px;
+    background: var(--surface-inverted-default);
+    color: white;
+    border-radius: var(--radius-xxs);
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  /* ====================================================================
+     INPUT
+     ==================================================================== */
+  .input {
+    width: 100%;
+    height: 32px;
+    padding: 0 8px;
+    border-radius: var(--radius-xs);
+    border: 1px solid var(--border-neutral-default);
+    background: var(--elevation-neutral-default);
+    font-size: 14px; color: var(--content-neutral-default);
+    outline: none;
+  }
+  .input::placeholder { color: var(--content-neutral-placeholder); }
+  .input:hover { background: var(--hover-input); }
+  .input:focus {
+    border-width: 2px; border-color: var(--focus);
+    padding: 0 7px;
+  }
+  .input-search {
+    background: var(--elevation-neutral-default);
+    padding-left: 30px;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%235C6370' stroke-width='2'><circle cx='11' cy='11' r='8'/><line x1='21' y1='21' x2='16.65' y2='16.65'/></svg>");
+    background-repeat: no-repeat;
+    background-position: 9px center;
+  }
+
+  /* ====================================================================
+     AVATAR
+     ==================================================================== */
+  .avatar {
+    width: 28px; height: 28px; border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center;
+    color: white; font-weight: 600; font-size: 11px;
+    flex-shrink: 0;
+  }
+  .avatar.sm { width: 20px; height: 20px; font-size: 10px; }
+  .avatar.lg { width: 36px; height: 36px; font-size: 13px; }
+  .avatar.purple { background: linear-gradient(135deg, var(--purple-400) 0%, var(--purple-600) 100%); }
+  .avatar.green  { background: linear-gradient(135deg, #4FBE7E 0%, var(--green-800) 100%); }
+  .avatar.blue   { background: linear-gradient(135deg, var(--blue-600) 0%, var(--blue-900) 100%); }
+  .avatar.amber  { background: linear-gradient(135deg, var(--orange-500) 0%, var(--orange-800) 100%); }
+  .avatar.pink   { background: linear-gradient(135deg, #EC4899 0%, #BE185D 100%); }
+  .avatar.gray   { background: var(--surface-neutral-secondary); color: var(--content-neutral-secondary); }
+
+  /* ====================================================================
+     INTRO SLIDE — leadership preview of routing concepts
+     ==================================================================== */
+  .intro-shell {
+    height: 100%;
+    background: var(--elevation-neutral-default);
+    display: flex; flex-direction: column;
+    overflow: hidden;
+    position: relative;
+  }
+  .intro-shell::before {
+    content: '';
+    position: absolute;
+    top: -200px; right: -200px;
+    width: 720px; height: 720px;
+    background: radial-gradient(closest-side, rgba(126, 85, 246, 0.10) 0%, rgba(255, 151, 128, 0.06) 40%, transparent 80%);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .intro-shell::after {
+    content: '';
+    position: absolute;
+    bottom: -240px; left: -160px;
+    width: 600px; height: 600px;
+    background: radial-gradient(closest-side, rgba(255, 151, 128, 0.08) 0%, rgba(126, 85, 246, 0.05) 50%, transparent 80%);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .intro-body {
+    flex: 1;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 56px 56px 40px;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+  }
+  .intro-eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 4px 12px;
+    border-radius: 999px;
+    background: var(--surface-accent-default);
+    color: var(--content-accent-default);
+    font-size: 11px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.12em;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 500ms var(--motion-layout), transform 500ms var(--motion-layout);
+  }
+  .intro-eyebrow .ai-sparkle {
+    width: 12px; height: 12px;
+    background: linear-gradient(135deg, var(--coral-500) 0%, var(--purple-500) 100%);
+    -webkit-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='black'><path d='M12 2l1.5 6.5L20 10l-6.5 1.5L12 18l-1.5-6.5L4 10l6.5-1.5z'/></svg>") no-repeat center / contain;
+            mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='black'><path d='M12 2l1.5 6.5L20 10l-6.5 1.5L12 18l-1.5-6.5L4 10l6.5-1.5z'/></svg>") no-repeat center / contain;
+  }
+  .intro-title {
+    font-size: 44px;
+    line-height: 52px;
+    font-weight: 600;
+    letter-spacing: -1px;
+    margin: 16px 0 12px;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 600ms var(--motion-layout), transform 600ms var(--motion-layout);
+    transition-delay: 100ms;
+  }
+  .intro-title em {
+    font-style: normal;
+    background: linear-gradient(135deg, var(--coral-500) 0%, var(--purple-500) 70%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .intro-subtitle {
+    max-width: 720px;
+    font-size: 16px; line-height: 24px;
+    color: var(--content-neutral-secondary);
+    text-align: center;
+    margin: 0 0 48px;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 500ms var(--motion-layout), transform 500ms var(--motion-layout);
+    transition-delay: 200ms;
+  }
+  .intro-row {
+    display: flex;
+    align-items: stretch;
+    gap: 12px;
+    width: 100%;
+    max-width: 1240px;
+  }
+  .intro-card {
+    flex: 1;
+    background: var(--elevation-neutral-default);
+    border: 1px solid var(--border-neutral-default);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--effects-shadow-container);
+    padding: 24px;
+    display: flex; flex-direction: column;
+    min-width: 0;
+    opacity: 0;
+    transform: translateY(24px) scale(0.97);
+    transition: opacity 600ms var(--motion-layout), transform 600ms var(--motion-layout), box-shadow 200ms var(--motion-micro);
+    position: relative;
+    overflow: hidden;
+  }
+  .intro-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--coral-500) 0%, var(--purple-500) 100%);
+    opacity: 0.85;
+  }
+  .intro-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+  }
+  .intro-card .step-num {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 11px; font-weight: 600;
+    color: var(--content-accent-default);
+    text-transform: uppercase; letter-spacing: 0.12em;
+    margin-bottom: 10px;
+  }
+  .intro-card .step-num .n {
+    width: 18px; height: 18px; border-radius: 50%;
+    background: var(--surface-accent-default);
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 10px;
+  }
+  .intro-card .question {
+    font-size: 11px; font-weight: 600;
+    color: var(--content-neutral-tertiary);
+    text-transform: uppercase; letter-spacing: 0.12em;
+    margin-bottom: 8px;
+  }
+  .intro-card .name {
+    font-size: 28px;
+    line-height: 32px;
+    font-weight: 600;
+    color: var(--content-neutral-default);
+    margin-bottom: 12px;
+    letter-spacing: -0.5px;
+  }
+  .intro-card .desc {
+    font-size: 13px; line-height: 20px;
+    color: var(--content-neutral-default);
+    margin-bottom: 16px;
+    flex: 1;
+  }
+  .intro-card .replaces {
+    border-top: 1px solid var(--border-neutral-default);
+    padding-top: 12px;
+  }
+  .intro-card .replaces .l {
+    font-size: 10px; font-weight: 600;
+    color: var(--content-neutral-tertiary);
+    text-transform: uppercase; letter-spacing: 0.12em;
+    margin-bottom: 4px;
+  }
+  .intro-card .replaces .v {
+    font-size: 12px; line-height: 16px;
+    color: var(--content-neutral-secondary);
+  }
+  .intro-card .replaces.new-tag .v {
+    color: var(--content-accent-default);
+    font-weight: 500;
+  }
+  .intro-arrow {
+    display: flex; align-items: center; justify-content: center;
+    width: 24px; flex-shrink: 0;
+    color: var(--content-neutral-tertiary);
+    opacity: 0;
+    transition: opacity 400ms var(--motion-layout);
+  }
+
+  /* Trigger animations when screen becomes active */
+  .screen.is-active .intro-eyebrow { opacity: 1; transform: translateY(0); }
+  .screen.is-active .intro-title { opacity: 1; transform: translateY(0); }
+  .screen.is-active .intro-subtitle { opacity: 1; transform: translateY(0); }
+  .screen.is-active .intro-card { opacity: 1; transform: translateY(0) scale(1); }
+  .screen.is-active .intro-card:nth-child(1) { transition-delay: 300ms, 300ms, 0ms; }
+  .screen.is-active .intro-card:nth-child(3) { transition-delay: 420ms, 420ms, 0ms; }
+  .screen.is-active .intro-card:nth-child(5) { transition-delay: 540ms, 540ms, 0ms; }
+  .screen.is-active .intro-card:nth-child(7) { transition-delay: 660ms, 660ms, 0ms; }
+  .screen.is-active .intro-arrow { opacity: 1; }
+  .screen.is-active .intro-arrow:nth-child(2) { transition-delay: 480ms; }
+  .screen.is-active .intro-arrow:nth-child(4) { transition-delay: 600ms; }
+  .screen.is-active .intro-arrow:nth-child(6) { transition-delay: 720ms; }
+
+  .intro-footer {
+    margin-top: 48px;
+    display: flex; flex-direction: column; align-items: center; gap: 12px;
+    width: 100%; max-width: 1240px;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 600ms var(--motion-layout), transform 600ms var(--motion-layout);
+    transition-delay: 900ms;
+  }
+  .screen.is-active .intro-footer { opacity: 1; transform: translateY(0); }
+  .intro-footer-summary {
+    text-align: center;
+    font-size: 13px;
+    color: var(--content-neutral-secondary);
+    max-width: 760px;
+    line-height: 20px;
+  }
+  .intro-footer-summary b { color: var(--content-neutral-default); font-weight: 600; }
+  .intro-footer-actions {
+    display: flex; gap: 12px; align-items: center;
+    margin-top: 8px;
+  }
+
+  /* ====================================================================
+     COMPLETION PAGE ("Great work!" — AI Agent done)
+     Reuses the existing AI Agent setup completion layout.
+     ==================================================================== */
+  .completion-shell {
+    display: flex;
+    height: 100%;
+    background: var(--elevation-neutral-default);
+    position: relative;
+  }
+  .completion-shell .sidebar { background: var(--elevation-neutral-default); }
+  .completion-body {
+    flex: 1; overflow-y: auto;
+    display: flex; flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 64px 32px;
+    position: relative;
+  }
+  .completion-content {
+    max-width: 560px;
+    width: 100%;
+    text-align: center;
+  }
+  .completion-icon {
+    width: 88px; height: 88px;
+    margin: 0 auto 24px;
+    background: var(--surface-accent-primary);
+    border-radius: 20px;
+    display: flex; align-items: center; justify-content: center;
+    color: white;
+    box-shadow: 0 12px 40px rgba(126, 85, 246, 0.25);
+    position: relative;
+  }
+  .completion-icon::before {
+    content: '';
+    position: absolute;
+    inset: -40px;
+    background: radial-gradient(closest-side, rgba(126, 85, 246, 0.18) 0%, rgba(255, 151, 128, 0.08) 50%, transparent 80%);
+    z-index: -1;
+  }
+  .completion-title {
+    font-size: 32px; font-weight: 600;
+    line-height: 40px;
+    color: var(--content-neutral-default);
+    margin: 0 0 12px;
+    letter-spacing: -0.5px;
+  }
+  .completion-sub {
+    font-size: 15px; line-height: 22px;
+    color: var(--content-neutral-secondary);
+    margin: 0 auto 40px;
+    max-width: 460px;
+  }
+  .next-steps-label {
+    text-align: left;
+    font-size: 14px; font-weight: 600;
+    color: var(--content-neutral-default);
+    margin-bottom: 20px;
+  }
+  .next-step-item {
+    display: flex; align-items: center; gap: 16px;
+    padding: 8px 0;
+    text-align: left;
+  }
+  .next-step-item .ico-box {
+    width: 40px; height: 40px;
+    background: var(--surface-accent-default);
+    color: var(--content-accent-default);
+    border-radius: var(--radius-sm);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .next-step-item .step-text {
+    font-size: 14px; line-height: 20px;
+    color: var(--content-neutral-default);
+  }
+  .next-step-item.transition {
+    margin-top: 8px;
+    padding: 12px;
+    border-radius: var(--radius-sm);
+    background: linear-gradient(
+      175deg,
+      rgba(253, 159, 138, 0.10) 12%,
+      rgba(231, 150, 255, 0.04) 40%,
+      rgba(160, 132, 225, 0.10) 88%
+    );
+    border: 0.5px solid var(--coral-500);
+  }
+  .next-step-item.transition .ico-box {
+    background: white;
+    color: var(--purple-500);
+  }
+  .next-step-item.transition .recommended-tag {
+    margin-left: auto;
+    flex-shrink: 0;
+  }
+  .completion-actions {
+    display: flex; align-items: center; justify-content: center;
+    gap: 12px;
+    margin-top: 40px;
+  }
+  .completion-tertiary {
+    display: block;
+    text-align: center;
+    margin-top: 16px;
+    font-size: 13px;
+    color: var(--content-neutral-secondary);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: var(--border-neutral-default);
+    background: transparent;
+  }
+  .completion-tertiary:hover { color: var(--content-neutral-default); }
+
+  /* ====================================================================
+     TICKET / BRIEFING
+     ==================================================================== */
+  .briefing-card {
+    background: var(--surface-additional-purple);
+    border: 1px solid var(--border-additional-purple);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    margin-bottom: 16px;
+  }
+  .briefing-header {
+    padding: 12px 20px;
+    display: flex; align-items: center; gap: 10px;
+    border-bottom: 1px solid var(--border-additional-purple);
+    background: rgba(255,255,255,0.5);
+  }
+  .briefing-header .title { font-weight: 600; font-size: 14px; color: var(--content-accent-default); flex: 1; }
+  .briefing-body { padding: 16px 20px; background: white; }
+  .briefing-row {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 16px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border-neutral-default);
+    font-size: 14px;
+    line-height: 20px;
+  }
+  .briefing-row:last-child { border-bottom: none; }
+  .briefing-row .key {
+    font-size: 12px; font-weight: 600;
+    color: var(--content-neutral-secondary);
+    letter-spacing: 0.12px;
+    text-transform: uppercase;
+  }
+
+  .thread {
+    background: var(--elevation-neutral-mid);
+    border: 1px solid var(--border-neutral-default);
+    border-radius: var(--radius-sm);
+    padding: 24px;
+    box-shadow: var(--effects-shadow-container);
+  }
+  .thread-msg {
+    display: flex; gap: 12px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border-neutral-default);
+  }
+  .thread-msg:last-child { border-bottom: none; padding-bottom: 0; }
+  .thread-msg:first-child { padding-top: 0; }
+  .thread-msg-body { flex: 1; }
+  .thread-msg-meta {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 12px; letter-spacing: 0.12px;
+    margin-bottom: 6px;
+  }
+  .thread-msg-meta .author { font-weight: 600; color: var(--content-neutral-default); }
+  .thread-msg-meta .time { color: var(--content-neutral-tertiary); }
+  .thread-msg-content { font-size: 14px; color: var(--content-neutral-default); line-height: 20px; }
+  .thread-msg.from-ai {
+    background: var(--surface-additional-purple);
+    margin: 0 -24px;
+    padding: 16px 24px;
+    border-bottom-color: var(--border-additional-purple);
+  }
+
+  /* ====================================================================
+     CONTEXT (right rail on ticket)
+     ==================================================================== */
+  .context-rail {
+    width: 320px;
+    background: var(--elevation-neutral-default);
+    border-left: 1px solid var(--border-neutral-default);
+    overflow-y: auto;
+    flex-shrink: 0;
+  }
+  .context-section {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border-neutral-default);
+  }
+  .context-section .title {
+    font-size: 10px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--content-neutral-secondary);
+    margin-bottom: 10px;
+  }
+  .context-row {
+    display: flex; align-items: center; gap: 8px;
+    padding: 4px 0;
+    font-size: 13px;
+  }
+  .context-row .l { color: var(--content-neutral-secondary); }
+  .context-row .v { margin-left: auto; font-weight: 500; }
+
+  /* ====================================================================
+     UTILS
+     ==================================================================== */
+  .row { display: flex; align-items: center; gap: 8px; }
+  .col { display: flex; flex-direction: column; gap: 8px; }
+  .gap-sm { gap: 12px; }
+  .gap-md { gap: 16px; }
+  .ml-auto { margin-left: auto; }
+  .text-muted { color: var(--content-neutral-secondary); }
+  .text-subtle { color: var(--content-neutral-tertiary); }
+  .grow { flex: 1; }
+  .mt-md { margin-top: 16px; }
+  .mt-lg { margin-top: 24px; }
+  .mb-md { margin-bottom: 16px; }
+  .mb-lg { margin-bottom: 24px; }
+
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border-neutral-default); border-radius: 999px; border: 2px solid transparent; background-clip: padding-box; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--grey-200); background-clip: padding-box; border: 2px solid transparent; }
+
+  /* SVG inline icon helpers */
+  .ico-stroke { stroke: currentColor; stroke-width: 1.5; fill: none; }
+</style>
+</head>
+<body>
+
+<!-- =================================================================
+     PROTOTYPE STRIP (top, navigation between prototype screens)
+================================================================= -->
+<div class="proto-topbar">
+  <div class="brand">Helpdesk 3.0</div>
+  <div class="crumb">· <b>Manager Journey Prototype</b></div>
+  <div class="proto-progress" id="protoProgress">
+    <button class="proto-step" data-jump="intro"><span class="num">0</span>Intro</button>
+    <span class="proto-divider"></span>
+    <button class="proto-step" data-jump="ai-onboarding"><span class="num">1</span>AI Agent done</button>
+    <span class="proto-divider"></span>
+    <button class="proto-step" data-jump="routing-onboarding"><span class="num">2</span>Routing setup</button>
+    <span class="proto-divider"></span>
+    <button class="proto-step" data-jump="routing-overview"><span class="num">3</span>Overview</button>
+    <span class="proto-divider"></span>
+    <button class="proto-step" data-jump="queues"><span class="num">4</span>Queues</button>
+    <span class="proto-divider"></span>
+    <button class="proto-step" data-jump="proactive"><span class="num">5</span>Queue detail</button>
+    <span class="proto-divider"></span>
+    <button class="proto-step" data-jump="spike"><span class="num">6</span>Signals</button>
+    <span class="proto-divider"></span>
+    <button class="proto-step" data-jump="ticket"><span class="num">7</span>Ticket</button>
+  </div>
+</div>
+
+<div class="viewport">
+
+  <!-- ===============================================================
+       Reusable: 48px global sidebar (12 fixed icons)
+       Defined once with template; cloned via JS for each screen.
+       =============================================================== -->
+  <template id="global-sidebar-template">
+    <div class="sidebar">
+      <div class="sb-icon-btn" data-icon="home" title="Home"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+      <div class="sb-icon-btn" data-icon="search" title="Search"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+      <div class="sb-icon-btn" data-icon="notif" title="Notifications"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></div>
+      <div class="sb-icon-btn" data-icon="tickets" title="Tickets"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><line x1="8" y1="9" x2="16" y2="9"/><line x1="8" y1="13" x2="14" y2="13"/></svg></div>
+      <div class="sb-icon-btn" data-icon="ai-agent" title="AI Agent"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.6 6.4L20 11l-6.4 1.6L12 19l-1.6-6.4L4 11l6.4-1.6z"/><path d="M5 5l.5 2L7 7.5 5.5 8 5 10 4.5 8 3 7.5 4.5 7z"/><path d="M19 14l.5 1.5L21 16l-1.5.5L19 18l-.5-1.5L17 16l1.5-.5z"/></svg></div>
+      <div class="sb-icon-btn" data-icon="campaigns" title="Campaigns"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg></div>
+      <div class="sb-icon-btn" data-icon="convert" title="Convert"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="6" x2="12" y2="18"/><path d="M15 9a3 3 0 0 0-3-2c-1.7 0-3 1.1-3 2.5S10.3 12 12 12s3 1.1 3 2.5-1.3 2.5-3 2.5a3 3 0 0 1-3-2"/></svg></div>
+      <div class="sb-icon-btn" data-icon="customers" title="Customers"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+      <div class="sb-icon-btn" data-icon="analytics" title="Analytics"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+      <div class="sb-spacer"></div>
+      <div class="sb-copilot" title="Copilot"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.5 6.5L20 10l-6.5 1.5L12 18l-1.5-6.5L4 10l6.5-1.5z"/></svg></div>
+      <div class="sb-icon-btn" data-icon="settings" title="Settings"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></div>
+      <div class="sb-profile" title="Profile">AP</div>
+    </div>
+  </template>
+
+  <!-- ===============================================================
+       Reusable: Tickets sub-sidebar (Workflows > Routing exposed)
+       =============================================================== -->
+  <template id="tickets-subnav-template">
+    <aside class="subnav">
+      <div class="subnav-header">
+        <div class="product-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>
+        <span class="product-name">Tickets</span>
+        <svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+
+      <div class="subnav-account">
+        <div class="logo">A</div>
+        <div class="name">artemisathletix</div>
+        <div class="status"></div>
+      </div>
+
+      <div class="subnav-body">
+        <div class="subnav-item" data-route="tickets-inbox">
+          <span class="ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 002 2h16a2 2 0 002-2v-6l-3.45-6.89A2 2 0 0016.76 4H7.24a2 2 0 00-1.79 1.11z"/></svg></span>
+          All inbox <span class="count">142</span>
+        </div>
+        <div class="subnav-item" data-route="sla-risk">
+          <span class="ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>
+          SLA at risk <span class="count warning">11</span>
+        </div>
+        <div class="subnav-item" data-route="from-ai">
+          <span class="ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 19 9 12 16 5 9 12 2"/></svg></span>
+          From AI <span class="count ai">28</span>
+        </div>
+
+        <div class="subnav-section-title">Workflows</div>
+        <div class="subnav-item" data-route="rules">
+          <span class="ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 3H6a2 2 0 00-2 2v14a2 2 0 002 2h12a2 2 0 002-2v-7"/><circle cx="18" cy="5" r="3"/></svg></span>
+          Rules
+        </div>
+        <div class="subnav-item" data-route="macros">
+          <span class="ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></span>
+          Macros
+        </div>
+        <div class="subnav-item" data-route="slas">
+          <span class="ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>
+          SLAs
+        </div>
+        <div class="subnav-item active" data-route="routing">
+          <span class="ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg></span>
+          Routing <span class="new-pill">New</span>
+        </div>
+
+        <div class="subnav-section-title" style="margin-top: 8px;">Views</div>
+        <div class="subnav-item">
+          <span class="ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v6m0 10v6M4.22 4.22l4.24 4.24m7.08 7.08l4.24 4.24M1 12h6m10 0h6"/></svg></span>
+          Shared views
+        </div>
+      </div>
+    </aside>
+  </template>
+
+  <!-- ===============================================================
+       SCREEN 0 — INTRO SLIDE (Leadership preview)
+       Explains the 4 new routing concepts and how they map to
+       current Gorgias entities. Staggered entrance animations.
+       =============================================================== -->
+  <section class="screen" id="screen-intro" data-screen="intro">
+    <div class="intro-shell">
+      <div class="intro-body">
+
+        <div class="intro-eyebrow">
+          <span class="ai-sparkle"></span>
+          Helpdesk 3.0 · Leadership preview
+        </div>
+
+        <h1 class="intro-title">Routing, in <em>four questions</em>.</h1>
+
+        <p class="intro-subtitle">
+          Today, merchants describe routing with conditional rules — "what to do." In Helpdesk 3.0, the system asks four questions for every ticket. The merchant declares the small surface that actually changes per business.
+        </p>
+
+        <div class="intro-row">
+
+          <div class="intro-card">
+            <div class="step-num"><span class="n">1</span>What</div>
+            <div class="question">What is this ticket about?</div>
+            <div class="name">Intent</div>
+            <div class="desc">A classification of the customer's underlying request — refund, shipping, promo, VIP order.</div>
+            <div class="replaces">
+              <div class="l">In Gorgias today</div>
+              <div class="v">Already exists — but hidden inside AI Agent. H3 makes it the top-level routing key.</div>
+            </div>
+          </div>
+
+          <div class="intro-arrow">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </div>
+
+          <div class="intro-card">
+            <div class="step-num"><span class="n">2</span>Where</div>
+            <div class="question">Where does it belong?</div>
+            <div class="name">Queue</div>
+            <div class="desc">A named bucket of tickets that share routing logic, a team, capacity rules, and SLA targets.</div>
+            <div class="replaces">
+              <div class="l">In Gorgias today</div>
+              <div class="v">Replaces Rules + Views + Teams + Tags — four objects collapse into one.</div>
+            </div>
+          </div>
+
+          <div class="intro-arrow">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </div>
+
+          <div class="intro-card">
+            <div class="step-num"><span class="n">3</span>When</div>
+            <div class="question">How urgent vs. others?</div>
+            <div class="name">Signal</div>
+            <div class="desc">A composite score — customer value, SLA risk, sentiment, channel — that re-ranks tickets <i>inside</i> a queue.</div>
+            <div class="replaces new-tag">
+              <div class="l">In Gorgias today</div>
+              <div class="v">Net-new. Replaces manual Priority field + SLA badge with one composite, system-aware score.</div>
+            </div>
+          </div>
+
+          <div class="intro-arrow">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </div>
+
+          <div class="intro-card">
+            <div class="step-num"><span class="n">4</span>Who</div>
+            <div class="question">Who can take it right now?</div>
+            <div class="name">Capacity</div>
+            <div class="desc">Per-agent concurrent limits, tier modifiers, OOO blocking, push-vs-pick behavior.</div>
+            <div class="replaces new-tag">
+              <div class="l">In Gorgias today</div>
+              <div class="v">Net-new. Today agents self-select from views; H3 lets the system push respecting limits.</div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="intro-footer">
+          <div class="intro-footer-summary">
+            The merchant no longer describes <b>what to do</b> for every condition. They describe <b>what kind of work this is</b> — and the system answers the rest.
+          </div>
+          <div class="intro-footer-actions">
+            <button class="btn" onclick="goto('ai-onboarding')">Skip intro</button>
+            <button class="btn btn-primary" onclick="goto('ai-onboarding')">
+              Start the prototype
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===============================================================
+       SCREEN 1 — AI AGENT "DONE" PAGE (Great work! completion)
+       Reuses the existing AI Agent setup completion layout.
+       Adds a routing transition as the 4th "what happens next" item,
+       and reorganizes actions so routing is the recommended path
+       while keeping the page fully skippable.
+       =============================================================== -->
+  <section class="screen" id="screen-ai-onboarding" data-screen="ai-onboarding">
+    <div class="completion-shell">
+      <div data-mount="sidebar" data-active="ai-agent"></div>
+
+      <div class="completion-body">
+        <div class="completion-content">
+          <div class="completion-icon">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.5 6.5L20 10l-6.5 1.5L12 18l-1.5-6.5L4 10l6.5-1.5z"/></svg>
+          </div>
+
+          <h1 class="completion-title">Great work!</h1>
+          <p class="completion-sub">
+            In just a couple of minutes, you've built an AI Agent that can handle your most common conversations.
+          </p>
+
+          <div class="next-steps-label">Here's what happens next:</div>
+
+          <div class="next-step-item">
+            <div class="ico-box">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 002 2h16a2 2 0 002-2v-6l-3.45-6.89A2 2 0 0016.76 4H7.24a2 2 0 00-1.79 1.11z"/></svg>
+            </div>
+            <div class="step-text">New tickets start routing through your AI Agent immediately</div>
+          </div>
+
+          <div class="next-step-item">
+            <div class="ico-box">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+            </div>
+            <div class="step-text">You'll see a live performance view in your dashboard</div>
+          </div>
+
+          <div class="next-step-item">
+            <div class="ico-box">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
+            </div>
+            <div class="step-text">You can add skills, tweak tone, or train it on past tickets at any time</div>
+          </div>
+
+          <!-- NEW: routing transition item, framed as the next recommended step -->
+          <div class="next-step-item transition">
+            <div class="ico-box">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg>
+            </div>
+            <div class="step-text">
+              <b>Set up routing for the 20% your AI Agent can't close</b><br/>
+              <span class="text-muted" style="font-size: 13px;">Tell Gaia how human-bound tickets should reach your team — takes 2 minutes, reversible anytime.</span>
+            </div>
+            <span class="recommended-tag">Recommended</span>
+          </div>
+
+          <div class="completion-actions">
+            <button class="btn" onclick="goto('routing-overview')">Take me to my inbox</button>
+            <button class="btn btn-primary" onclick="goto('routing-onboarding')">
+              Set up routing
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </button>
+          </div>
+
+          <button class="completion-tertiary" onclick="goto('routing-overview')">
+            Or review my AI Agent skills first
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===============================================================
+       SCREEN 2 — ROUTING ONBOARDING (CONVERSATIONAL FULLSCREEN)
+       =============================================================== -->
+  <section class="screen" id="screen-routing-onboarding" data-screen="routing-onboarding">
+    <div class="conv-shell">
+      <div data-mount="sidebar" data-active="tickets"></div>
+
+      <button class="conv-finish" onclick="goto('routing-overview')">Finish later</button>
+
+      <div class="conv-body" id="routingConvBody">
+        <div class="conv-inner">
+
+          <div class="conv-msg">
+            <p>Now let's set up <b>routing</b> — how the conversations your AI Agent can't close get assigned to your humans.</p>
+            <p>I'll analyze your past 60 days of tickets, your team setup, and your storefront so I can propose a starting configuration. You can edit anything afterward.</p>
+          </div>
+
+          <div class="conv-source-pill">
+            <span class="check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+            Analyzed 60 days of tickets · 14 agents · UrbanStems storefront
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+
+          <p class="conv-msg">Here's what I'm proposing. Three queues that match how your human-bound tickets actually break down.</p>
+
+          <div class="conv-card-list">
+            <div class="conv-card">
+              <div class="icon-box"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 19 9 12 16 5 9 12 2"/></svg></div>
+              <div class="body">
+                <div class="label">VIP & wholesale</div>
+                <div class="desc">12% of your tickets · senior agents (4) · priority routing</div>
+              </div>
+              <div class="actions"><span class="ready-pill">Ready to enable</span><button class="btn btn-sm">View</button></div>
+            </div>
+            <div class="conv-card">
+              <div class="icon-box"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V7"/><polyline points="3 7 12 13 21 7"/></svg></div>
+              <div class="body">
+                <div class="label">Returns & refunds</div>
+                <div class="desc">28% of your tickets · returns specialists (6)</div>
+              </div>
+              <div class="actions"><span class="ready-pill">Ready to enable</span><button class="btn btn-sm">View</button></div>
+            </div>
+            <div class="conv-card">
+              <div class="icon-box"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 010 20"/></svg></div>
+              <div class="body">
+                <div class="label">General support</div>
+                <div class="desc">60% of your tickets · all agents (14) · fallback queue</div>
+              </div>
+              <div class="actions"><span class="ready-pill">Ready to enable</span><button class="btn btn-sm">View</button></div>
+            </div>
+          </div>
+
+          <div class="conv-question" style="margin-top: 16px;">
+            <div class="q-head">Do you want to enable these queues?</div>
+            <div class="conv-option recommended" onclick="advanceRouting(this, 'turn1', 'Turn on all 3 queues')">
+              <div class="num">1</div>
+              <div class="opt-body">
+                <div class="opt-label">Turn on all 3 queues <span class="recommended-tag">Recommended</span></div>
+                <div class="opt-desc">Routes go live immediately. Edit anything later.</div>
+              </div>
+            </div>
+            <div class="conv-option" onclick="advanceRouting(this, 'turn1', 'Let me choose')">
+              <div class="num">2</div>
+              <div class="opt-body">
+                <div class="opt-label">Let me choose</div>
+                <div class="opt-desc">Pick which queues to enable — others fall back to General</div>
+              </div>
+            </div>
+            <div class="q-input">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+              <input type="text" placeholder="Something else…" />
+            </div>
+          </div>
+
+          <div id="routing-turn-2" style="display:none;">
+            <div class="reviewed-bar">
+              <span class="check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+              Enabled 3 queues
+            </div>
+
+            <p class="conv-msg">Now — how should tickets get prioritized <i>inside</i> each queue? These signals re-rank so urgent things come first.</p>
+
+            <div class="conv-card-list">
+              <div class="conv-card">
+                <div class="icon-box"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+                <div class="body">
+                  <div class="label">Customer value</div>
+                  <div class="desc">VIPs and AOV &gt; $300</div>
+                </div>
+                <div class="actions"><span class="ready-pill">Recommended</span></div>
+              </div>
+              <div class="conv-card">
+                <div class="icon-box"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+                <div class="body">
+                  <div class="label">SLA risk</div>
+                  <div class="desc">Tickets approaching their breach window</div>
+                </div>
+                <div class="actions"><span class="ready-pill">Recommended</span></div>
+              </div>
+              <div class="conv-card">
+                <div class="icon-box"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>
+                <div class="body">
+                  <div class="label">Sentiment</div>
+                  <div class="desc">Frustration / churn-risk language</div>
+                </div>
+                <div class="actions"><span class="ready-pill">Recommended</span></div>
+              </div>
+            </div>
+
+            <div class="conv-question" style="margin-top: 16px;">
+              <div class="q-head">Apply these priority signals?</div>
+              <div class="conv-option recommended" onclick="advanceRouting(this, 'turn2', 'Use all 3 recommended signals')">
+                <div class="num">1</div>
+                <div class="opt-body">
+                  <div class="opt-label">Use all 3 signals <span class="recommended-tag">Recommended</span></div>
+                  <div class="opt-desc">Falls back to FIFO if no signal matches</div>
+                </div>
+              </div>
+              <div class="conv-option" onclick="advanceRouting(this, 'turn2', 'Just FIFO for now')">
+                <div class="num">2</div>
+                <div class="opt-body">
+                  <div class="opt-label">Just FIFO for now</div>
+                  <div class="opt-desc">Oldest ticket first — no AI prioritization</div>
+                </div>
+              </div>
+              <div class="q-input">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                <input type="text" placeholder="Something else…" />
+              </div>
+            </div>
+          </div>
+
+          <div id="routing-turn-3" style="display:none;">
+            <div class="reviewed-bar">
+              <span class="check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+              Enabled 3 priority signals
+            </div>
+
+            <p class="conv-msg">Last thing — <b>agent capacity</b>. How many tickets the system will assign to one person at a time.</p>
+
+            <div class="conv-card-list">
+              <div class="conv-card">
+                <div class="icon-box"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
+                <div class="body">
+                  <div class="label">Default capacity</div>
+                  <div class="desc">8 concurrent tickets per agent · senior agents +2</div>
+                </div>
+              </div>
+              <div class="conv-card">
+                <div class="icon-box"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/></svg></div>
+                <div class="body">
+                  <div class="label">OOO &amp; status</div>
+                  <div class="desc">Routing pauses automatically when agents are unavailable</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="conv-question" style="margin-top: 16px;">
+              <div class="q-head">Apply this configuration?</div>
+              <div class="conv-option recommended" onclick="goto('routing-overview')">
+                <div class="num">1</div>
+                <div class="opt-body">
+                  <div class="opt-label">Turn routing on <span class="recommended-tag">Recommended</span></div>
+                  <div class="opt-desc">Routes go live immediately. Reversible.</div>
+                </div>
+              </div>
+              <div class="conv-option" onclick="goto('routing-overview')">
+                <div class="num">2</div>
+                <div class="opt-body">
+                  <div class="opt-label">Save as draft</div>
+                  <div class="opt-desc">Nothing routes until you turn it on</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===============================================================
+       SCREEN 3 — ROUTING OVERVIEW (Tickets > Workflows > Routing)
+       =============================================================== -->
+  <section class="screen" id="screen-routing-overview" data-screen="routing-overview">
+    <div class="app">
+      <div data-mount="sidebar" data-active="tickets"></div>
+      <div class="main-area">
+        <div class="content-container has-subnav">
+          <div data-mount="tickets-subnav" data-active="routing"></div>
+
+          <div class="main">
+            <div class="page-header">
+              <div class="page-header-title">
+                <h1>Routing</h1>
+                <div class="page-header-actions">
+                  <button class="btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 019-9 9.75 9.75 0 016.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>Activity</button>
+                  <button class="btn">Test routing</button>
+                  <button class="btn btn-icon btn-tertiary"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></button>
+                </div>
+              </div>
+              <div class="page-header-tabs">
+                <div class="tab active">Overview</div>
+                <div class="tab" onclick="goto('queues')">Queues</div>
+                <div class="tab" onclick="goto('spike')">Signals</div>
+                <div class="tab">Capacity</div>
+                <div class="tab">Activity</div>
+              </div>
+            </div>
+
+            <div class="page-body padded">
+              <!-- Copilot banner -->
+              <div class="copilot-banner">
+                <span class="ai-icon"></span>
+                <div class="copy"><b>Gaia noticed something.</b> Returns &amp; refunds is backing up — 30% of tickets will breach SLA in the next 2 hours.</div>
+                <div class="actions">
+                  <button class="btn btn-primary" onclick="goto('proactive')">Review fix</button>
+                  <button class="btn">Dismiss</button>
+                </div>
+              </div>
+
+              <!-- Metric cards -->
+              <div class="metric-grid">
+                <div class="metric-card">
+                  <div class="label">AI resolution</div>
+                  <div class="value">63%
+                    <span class="delta up"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>4%</span>
+                  </div>
+                  <div class="meta">vs last week</div>
+                </div>
+                <div class="metric-card">
+                  <div class="label">Live in queues</div>
+                  <div class="value">142</div>
+                  <div class="meta">28 escalated by AI</div>
+                </div>
+                <div class="metric-card">
+                  <div class="label">SLA at risk</div>
+                  <div class="value">11
+                    <span class="delta down"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>6</span>
+                  </div>
+                  <div class="meta">in last hour</div>
+                </div>
+                <div class="metric-card">
+                  <div class="label">CSAT (24h)</div>
+                  <div class="value">4.6<span style="font-size: 14px; color: var(--content-neutral-tertiary); font-weight: 500;">/5</span>
+                    <span class="delta up"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>0.2</span>
+                  </div>
+                  <div class="meta">vs last week</div>
+                </div>
+              </div>
+
+              <!-- Queue health table -->
+              <div>
+                <div class="row" style="margin-bottom: 12px;">
+                  <div class="heading-md">Queue health</div>
+                  <div class="ml-auto row" style="gap: 8px;">
+                    <button class="btn btn-sm">Last 24h</button>
+                  </div>
+                </div>
+                <div class="data-table">
+                  <div class="data-table-head" style="grid-template-columns: 1.5fr 1.2fr 0.7fr 1fr 0.8fr 40px;">
+                    <div>Queue</div>
+                    <div>SLA health</div>
+                    <div>Live</div>
+                    <div>Team</div>
+                    <div>Trend</div>
+                    <div></div>
+                  </div>
+                  <div class="data-table-row" style="grid-template-columns: 1.5fr 1.2fr 0.7fr 1fr 0.8fr 40px;" onclick="goto('queues')">
+                    <div class="primary-cell"><div class="avatar sm purple">VS</div>VIP &amp; wholesale</div>
+                    <div><div class="col" style="gap: 4px;"><div class="sla-bar"><span style="width:92%"></span></div><div class="regular-sm">92% on track</div></div></div>
+                    <div>14</div>
+                    <div class="regular-sm">Senior · 4</div>
+                    <div><span class="tag success tag-sm">↑ healthy</span></div>
+                    <div></div>
+                  </div>
+                  <div class="data-table-row alert" style="grid-template-columns: 1.5fr 1.2fr 0.7fr 1fr 0.8fr 40px;" onclick="goto('proactive')">
+                    <div class="primary-cell"><div class="avatar sm green">RT</div>Returns &amp; refunds <span class="tag warning tag-sm">attention</span></div>
+                    <div><div class="col" style="gap: 4px;"><div class="sla-bar"><span class="warning" style="width:68%"></span></div><div style="color: var(--content-warning-default); font-size: 12px;">68% · 30% will breach</div></div></div>
+                    <div>52</div>
+                    <div class="regular-sm">Returns · 6</div>
+                    <div><span class="tag warning tag-sm">↓ backed up</span></div>
+                    <div></div>
+                  </div>
+                  <div class="data-table-row" style="grid-template-columns: 1.5fr 1.2fr 0.7fr 1fr 0.8fr 40px;">
+                    <div class="primary-cell"><div class="avatar sm blue">GS</div>General support</div>
+                    <div><div class="col" style="gap: 4px;"><div class="sla-bar"><span style="width:88%"></span></div><div class="regular-sm">88% on track</div></div></div>
+                    <div>76</div>
+                    <div class="regular-sm">All · 14</div>
+                    <div><span class="tag success tag-sm">↑ healthy</span></div>
+                    <div></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Active configuration summary -->
+              <div>
+                <div class="row" style="margin-bottom: 12px;">
+                  <div class="heading-md">Active configuration</div>
+                  <div class="ml-auto regular-sm">Last change · 4 min ago by Gaia</div>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px;">
+                  <div class="card">
+                    <div class="bold-sm" style="text-transform: uppercase; color: var(--content-neutral-secondary); margin-bottom: 12px;">Priority signals</div>
+                    <div class="col" style="gap: 4px;">
+                      <div class="row"><span class="dot accent"></span><span class="medium-md">Customer value</span><span class="regular-sm ml-auto">85%</span></div>
+                      <div class="row"><span class="dot accent"></span><span class="medium-md">SLA risk</span><span class="regular-sm ml-auto">75%</span></div>
+                      <div class="row"><span class="dot accent"></span><span class="medium-md">Sentiment</span><span class="regular-sm ml-auto">60%</span></div>
+                    </div>
+                  </div>
+                  <div class="card">
+                    <div class="bold-sm" style="text-transform: uppercase; color: var(--content-neutral-secondary); margin-bottom: 12px;">Capacity</div>
+                    <div class="col" style="gap: 4px;">
+                      <div class="row"><span class="medium-md">Default</span><span class="regular-sm ml-auto">8 concurrent</span></div>
+                      <div class="row"><span class="medium-md">Senior agents</span><span class="regular-sm ml-auto">10 concurrent</span></div>
+                      <div class="row"><span class="medium-md">Assignment</span><span class="regular-sm ml-auto">Push</span></div>
+                      <div class="row"><span class="medium-md">OOO blocking</span><span class="regular-sm ml-auto">On</span></div>
+                    </div>
+                  </div>
+                  <div class="card">
+                    <div class="bold-sm" style="text-transform: uppercase; color: var(--content-neutral-secondary); margin-bottom: 12px;">Channels</div>
+                    <div class="col" style="gap: 4px;">
+                      <div class="row"><span class="dot success"></span><span class="medium-md">Email</span><span class="regular-sm ml-auto">Live</span></div>
+                      <div class="row"><span class="dot success"></span><span class="medium-md">Chat</span><span class="regular-sm ml-auto">Live</span></div>
+                      <div class="row"><span class="dot success"></span><span class="medium-md">Voice</span><span class="regular-sm ml-auto">Live</span></div>
+                      <div class="row"><span class="dot"></span><span class="medium-md">SMS</span><span class="regular-sm ml-auto">Off</span></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===============================================================
+       SCREEN 4 — QUEUES LIST (Routing > Queues tab)
+       List of all queues with status + per-queue actions.
+       Click into a queue → Queue detail (proactive screen).
+       =============================================================== -->
+  <section class="screen" id="screen-queues" data-screen="queues">
+    <div class="app">
+      <div data-mount="sidebar" data-active="tickets"></div>
+      <div class="main-area">
+        <div class="content-container has-subnav">
+          <div data-mount="tickets-subnav" data-active="routing"></div>
+
+          <div class="main">
+            <div class="page-header">
+              <div class="page-header-title">
+                <h1>Routing</h1>
+                <div class="page-header-actions">
+                  <button class="btn">Activity</button>
+                  <button class="btn btn-primary">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    New queue
+                  </button>
+                </div>
+              </div>
+              <div class="page-header-tabs">
+                <div class="tab" onclick="goto('routing-overview')">Overview</div>
+                <div class="tab active">Queues</div>
+                <div class="tab" onclick="goto('spike')">Signals</div>
+                <div class="tab">Capacity</div>
+                <div class="tab">Activity</div>
+              </div>
+              <div class="page-header-count">
+                3 queues
+                <div class="actions">
+                  <button class="btn btn-sm btn-tertiary"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>Filters</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="page-body padded">
+              <!-- Small Gaia banner only -->
+              <div class="copilot-banner">
+                <span class="ai-icon"></span>
+                <div class="copy"><b>Gaia noticed something.</b> Returns &amp; refunds is backing up — 30% of tickets will breach SLA in the next 2 hours.</div>
+                <div class="actions">
+                  <button class="btn btn-primary" onclick="goto('proactive')">Review fix</button>
+                  <button class="btn">Dismiss</button>
+                </div>
+              </div>
+
+              <!-- Queues table -->
+              <div class="data-table">
+                <div class="data-table-head" style="grid-template-columns: 1.5fr 1fr 0.6fr 1fr 1fr 40px;">
+                  <div>Queue</div>
+                  <div>Status</div>
+                  <div>Live</div>
+                  <div>Team</div>
+                  <div>SLA health (24h)</div>
+                  <div></div>
+                </div>
+                <div class="data-table-row" style="grid-template-columns: 1.5fr 1fr 0.6fr 1fr 1fr 40px;">
+                  <div class="primary-cell"><div class="avatar sm purple">VS</div>VIP &amp; wholesale</div>
+                  <div><span class="tag accent tag-sm">priority</span></div>
+                  <div>14</div>
+                  <div class="regular-sm">Senior agents · 4</div>
+                  <div><div class="col" style="gap: 4px;"><div class="sla-bar"><span style="width:92%"></span></div><div class="regular-sm">92% on track</div></div></div>
+                  <div><button class="btn btn-icon btn-tertiary btn-sm"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></button></div>
+                </div>
+                <div class="data-table-row alert" style="grid-template-columns: 1.5fr 1fr 0.6fr 1fr 1fr 40px;" onclick="goto('proactive')">
+                  <div class="primary-cell"><div class="avatar sm green">RT</div>Returns &amp; refunds <span class="tag warning tag-sm">attention</span></div>
+                  <div><span class="tag tag-sm">intent</span></div>
+                  <div>52</div>
+                  <div class="regular-sm">Returns team · 6</div>
+                  <div><div class="col" style="gap: 4px;"><div class="sla-bar"><span class="warning" style="width:68%"></span></div><div style="color: var(--content-warning-default); font-size: 12px;">68% · 30% will breach</div></div></div>
+                  <div><button class="btn btn-icon btn-tertiary btn-sm"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></button></div>
+                </div>
+                <div class="data-table-row" style="grid-template-columns: 1.5fr 1fr 0.6fr 1fr 1fr 40px;">
+                  <div class="primary-cell"><div class="avatar sm blue">GS</div>General support</div>
+                  <div><span class="tag tag-sm">fallback</span></div>
+                  <div>76</div>
+                  <div class="regular-sm">All agents · 14</div>
+                  <div><div class="col" style="gap: 4px;"><div class="sla-bar"><span style="width:88%"></span></div><div class="regular-sm">88% on track</div></div></div>
+                  <div><button class="btn btn-icon btn-tertiary btn-sm"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></button></div>
+                </div>
+              </div>
+
+              <div class="regular-sm" style="margin-top: 8px;">Tip — click a queue to see its full configuration, intents that feed it, team, and at-risk tickets.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===============================================================
+       SCREEN 5 — SPIKE (Routing > Signals tab)
+       List of priority signals with per-signal actions.
+       Gaia banner at top → full interpretation/diff lives in Gaia panel.
+       =============================================================== -->
+  <section class="screen" id="screen-spike" data-screen="spike">
+    <div class="app">
+      <div data-mount="sidebar" data-active="tickets"></div>
+      <div class="main-area">
+        <div class="content-container has-subnav">
+          <div data-mount="tickets-subnav" data-active="routing"></div>
+
+          <div class="main">
+            <div class="page-header">
+              <div class="page-header-title">
+                <div class="back-btn" onclick="goto('routing-overview')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg></div>
+                <h1>Routing</h1>
+                <div class="page-header-actions">
+                  <button class="btn">Activity</button>
+                </div>
+              </div>
+              <div class="page-header-tabs">
+                <div class="tab" onclick="goto('routing-overview')">Overview</div>
+                <div class="tab">Queues</div>
+                <div class="tab active">Signals</div>
+                <div class="tab">Capacity</div>
+                <div class="tab">Activity</div>
+              </div>
+            </div>
+
+            <div class="page-body padded">
+              <!-- Small Gaia banner only — full interpretation lives in the panel -->
+              <div class="copilot-banner">
+                <span class="ai-icon"></span>
+                <div class="copy"><b>Gaia is proposing a change to your signals.</b> 2 edits ready to review — based on your last message in Gaia.</div>
+                <div class="actions">
+                  <button class="btn btn-primary">Review in Gaia →</button>
+                  <button class="btn">Dismiss</button>
+                </div>
+              </div>
+
+              <!-- Priority signals list — actual page content -->
+              <div>
+                <div class="row" style="margin-bottom: 12px;">
+                  <div class="heading-md">Priority signals</div>
+                  <span class="regular-sm" style="margin-left: 8px;">4 active</span>
+                  <button class="btn btn-sm ml-auto"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Add signal</button>
+                </div>
+                <div class="data-table">
+                  <div class="data-table-head" style="grid-template-columns: 1.2fr 1.6fr 1fr 0.8fr 100px 40px;">
+                    <div>Signal</div>
+                    <div>What it does</div>
+                    <div>Weight</div>
+                    <div>Status</div>
+                    <div>Actions</div>
+                    <div></div>
+                  </div>
+                  <div class="data-table-row" style="grid-template-columns: 1.2fr 1.6fr 1fr 0.8fr 100px 40px;">
+                    <div class="primary-cell"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>Customer value</div>
+                    <div class="regular-md">Boosts tickets from VIPs and customers with AOV &gt; $300</div>
+                    <div><div class="col" style="gap: 4px;"><div class="sla-bar"><span class="" style="width:85%; background: var(--purple-500);"></span></div><div class="regular-sm">85%</div></div></div>
+                    <div><span class="tag success tag-sm"><span class="dot success"></span>active</span></div>
+                    <div><div class="row" style="gap: 4px;"><button class="btn btn-sm btn-tertiary">Edit</button><button class="btn btn-sm btn-tertiary">Disable</button></div></div>
+                    <div><button class="btn btn-icon btn-tertiary btn-sm"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></button></div>
+                  </div>
+                  <div class="data-table-row" style="grid-template-columns: 1.2fr 1.6fr 1fr 0.8fr 100px 40px;">
+                    <div class="primary-cell"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>SLA risk</div>
+                    <div class="regular-md">Boosts tickets approaching their SLA breach window</div>
+                    <div><div class="col" style="gap: 4px;"><div class="sla-bar"><span style="width:75%; background: var(--purple-500);"></span></div><div class="regular-sm">75%</div></div></div>
+                    <div><span class="tag success tag-sm"><span class="dot success"></span>active</span></div>
+                    <div><div class="row" style="gap: 4px;"><button class="btn btn-sm btn-tertiary">Edit</button><button class="btn btn-sm btn-tertiary">Disable</button></div></div>
+                    <div><button class="btn btn-icon btn-tertiary btn-sm"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></button></div>
+                  </div>
+                  <div class="data-table-row" style="grid-template-columns: 1.2fr 1.6fr 1fr 0.8fr 100px 40px;">
+                    <div class="primary-cell"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>Sentiment</div>
+                    <div class="regular-md">Boosts tickets with frustrated / churn-risk language</div>
+                    <div><div class="col" style="gap: 4px;"><div class="sla-bar"><span style="width:60%; background: var(--purple-500);"></span></div><div class="regular-sm">60%</div></div></div>
+                    <div><span class="tag success tag-sm"><span class="dot success"></span>active</span></div>
+                    <div><div class="row" style="gap: 4px;"><button class="btn btn-sm btn-tertiary">Edit</button><button class="btn btn-sm btn-tertiary">Disable</button></div></div>
+                    <div><button class="btn btn-icon btn-tertiary btn-sm"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></button></div>
+                  </div>
+                  <div class="data-table-row" style="grid-template-columns: 1.2fr 1.6fr 1fr 0.8fr 100px 40px;">
+                    <div class="primary-cell"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg>Channel</div>
+                    <div class="regular-md">Boosts voice and live-chat tickets over async</div>
+                    <div><div class="col" style="gap: 4px;"><div class="sla-bar"><span style="width:50%; background: var(--purple-500);"></span></div><div class="regular-sm">50%</div></div></div>
+                    <div><span class="tag success tag-sm"><span class="dot success"></span>active</span></div>
+                    <div><div class="row" style="gap: 4px;"><button class="btn btn-sm btn-tertiary">Edit</button><button class="btn btn-sm btn-tertiary">Disable</button></div></div>
+                    <div><button class="btn btn-icon btn-tertiary btn-sm"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></button></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Intent routes — affected by Gaia's proposal -->
+              <div>
+                <div class="row" style="margin-bottom: 12px;">
+                  <div class="heading-md">Intent routes</div>
+                  <span class="regular-sm" style="margin-left: 8px;">7 active</span>
+                  <button class="btn btn-sm ml-auto"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Add intent route</button>
+                </div>
+                <div class="data-table">
+                  <div class="data-table-head" style="grid-template-columns: 120px 1fr 1.2fr 40px;">
+                    <div>Type</div>
+                    <div>Intent</div>
+                    <div>Destination</div>
+                    <div></div>
+                  </div>
+                  <div class="data-table-row" style="grid-template-columns: 120px 1fr 1.2fr 40px;">
+                    <div><span class="tag accent tag-sm">priority</span></div>
+                    <div class="primary-cell">VIP &amp; wholesale orders</div>
+                    <div>VIP &amp; wholesale queue</div>
+                    <div></div>
+                  </div>
+                  <div class="data-table-row" style="grid-template-columns: 120px 1fr 1.2fr 40px; background: var(--surface-accent-default);">
+                    <div><span class="tag accent tag-sm"><span class="dot accent"></span>proposed</span></div>
+                    <div class="primary-cell">Discount &amp; promo questions</div>
+                    <div>Sara K., Marc R. (direct)</div>
+                    <div></div>
+                  </div>
+                  <div class="data-table-row" style="grid-template-columns: 120px 1fr 1.2fr 40px;">
+                    <div><span class="tag tag-sm">intent</span></div>
+                    <div class="primary-cell">Returns &amp; refunds</div>
+                    <div>Returns &amp; refunds queue</div>
+                    <div></div>
+                  </div>
+                  <div class="data-table-row" style="grid-template-columns: 120px 1fr 1.2fr 40px;">
+                    <div><span class="tag tag-sm">intent</span></div>
+                    <div class="primary-cell">Shipping &amp; delivery</div>
+                    <div>General support queue</div>
+                    <div></div>
+                  </div>
+                  <div class="data-table-row" style="grid-template-columns: 120px 1fr 1.2fr 40px;">
+                    <div><span class="tag tag-sm">intent</span></div>
+                    <div class="primary-cell">Product info &amp; sizing</div>
+                    <div>General support queue</div>
+                    <div></div>
+                  </div>
+                  <div class="data-table-row" style="grid-template-columns: 120px 1fr 1.2fr 40px;">
+                    <div><span class="tag tag-sm">fallback</span></div>
+                    <div class="primary-cell">Anything else</div>
+                    <div>General support queue</div>
+                    <div></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Gaia side panel — Full interpretation lives here -->
+          <aside class="gaia-panel">
+            <div class="gaia-header">
+              <div class="gaia-spark"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.5 6.5L20 10l-6.5 1.5L12 18l-1.5-6.5L4 10l6.5-1.5z"/></svg></div>
+              <div class="title">Gaia</div>
+              <button class="btn btn-icon btn-tertiary btn-sm" onclick="goto('routing-overview')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+            </div>
+            <div class="gaia-body">
+              <div class="gaia-msg from-user"><div class="gaia-msg-bubble">Route discount questions to my two senior agents and increase their capacity by 5 tickets</div></div>
+
+              <div class="gaia-msg from-gaia">
+                <div class="gaia-msg-bubble">Got it. Here's what I understood — review and apply when ready.</div>
+              </div>
+
+              <!-- Interpretation card inside the panel -->
+              <div class="gaia-msg from-gaia">
+                <div class="gaia-msg-bubble" style="background: white; border: 1px solid var(--border-additional-purple); max-width: 100%;">
+                  <div class="row" style="margin-bottom: 8px;">
+                    <span class="tag accent tag-sm"><span class="dot accent"></span> Interpretation</span>
+                  </div>
+                  <div class="medium-sm" style="margin-bottom: 8px;">2 changes</div>
+                  <ol style="margin: 0 0 12px; padding-left: 18px; font-size: 12px; line-height: 18px; color: var(--content-neutral-default);">
+                    <li>New intent route <b>"Discount &amp; promo questions"</b> → Sara K. &amp; Marc R. (direct)</li>
+                    <li>Sara K. &amp; Marc R. capacity 8 → <b>13</b> concurrent</li>
+                  </ol>
+                  <div style="border-top: 1px solid var(--border-neutral-default); padding-top: 10px;">
+                    <div class="bold-xs" style="text-transform: uppercase; color: var(--content-neutral-secondary); margin-bottom: 6px; letter-spacing: 0.08em;">Before → After</div>
+                    <div style="font-size: 11px; line-height: 16px;">
+                      <div>Discount Qs → <s style="color: var(--content-neutral-tertiary);">General</s> <b style="color: var(--content-accent-default);">Sara K. + Marc R.</b></div>
+                      <div>Sara K. cap → <s style="color: var(--content-neutral-tertiary);">8</s> <b style="color: var(--content-accent-default);">13</b></div>
+                      <div>Marc R. cap → <s style="color: var(--content-neutral-tertiary);">8</s> <b style="color: var(--content-accent-default);">13</b></div>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-top: 10px; gap: 6px;">
+                    <button class="btn btn-sm">Edit</button>
+                    <button class="btn btn-sm btn-primary" style="margin-left: auto;">Apply change</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="gaia-msg from-gaia">
+                <div class="gaia-msg-bubble">
+                  <div class="medium-sm" style="margin-bottom: 6px;">My assumptions — push back if anything's off:</div>
+                  <ul style="margin: 0; padding-left: 18px; font-size: 12px; line-height: 18px;">
+                    <li>"Discount" = intent matching "promo code", "coupon doesn't work", "BOGO"</li>
+                    <li>"Two senior agents" = Sara K. (3.2y), Marc R. (2.8y)</li>
+                    <li>"+5 tickets" = on top of current 8</li>
+                    <li>Reversible — affects ~24 tickets next hour</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="gaia-input">
+              <div class="gaia-input-row">
+                <input type="text" placeholder="Ask Gaia anything…" />
+                <button class="gaia-send"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2" fill="currentColor"/></svg></button>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===============================================================
+       SCREEN 5 — PROACTIVE (Anomaly + Gaia proposed fix)
+       Routing > Overview, with focused queue + Gaia panel open
+       =============================================================== -->
+  <section class="screen" id="screen-proactive" data-screen="proactive">
+    <div class="app">
+      <div data-mount="sidebar" data-active="tickets"></div>
+      <div class="main-area">
+        <div class="content-container has-subnav">
+          <div data-mount="tickets-subnav" data-active="routing"></div>
+
+          <div class="main">
+            <div class="page-header">
+              <div class="page-header-title">
+                <div class="back-btn" onclick="goto('routing-overview')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg></div>
+                <h1>Returns &amp; refunds queue</h1>
+              </div>
+              <div class="page-header-tabs">
+                <div class="tab active">Overview</div>
+                <div class="tab">Tickets in queue (52)</div>
+                <div class="tab">Configuration</div>
+              </div>
+            </div>
+
+            <div class="page-body padded">
+              <!-- Small Gaia banner — full proposed fix is in the Gaia panel -->
+              <div class="copilot-banner">
+                <span class="ai-icon"></span>
+                <div class="copy"><b>Gaia noticed something.</b> Inflow tripled at 9:18 (Memorial Day promo). 16 tickets will breach SLA in 2 hours — proposed fix ready.</div>
+                <div class="actions">
+                  <button class="btn btn-primary">Review in Gaia →</button>
+                  <button class="btn">Dismiss</button>
+                </div>
+              </div>
+
+              <!-- Queue summary stats -->
+              <div class="metric-grid">
+                <div class="metric-card">
+                  <div class="label">Live</div>
+                  <div class="value">52</div>
+                  <div class="meta">+32 in last 30 min</div>
+                </div>
+                <div class="metric-card">
+                  <div class="label">On track</div>
+                  <div class="value" style="color: var(--content-warning-default);">68%
+                    <span class="delta down"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>24</span>
+                  </div>
+                  <div class="meta">vs target 95%</div>
+                </div>
+                <div class="metric-card">
+                  <div class="label">At-risk</div>
+                  <div class="value" style="color: var(--content-error-default);">16</div>
+                  <div class="meta">Breach in &lt; 2h</div>
+                </div>
+                <div class="metric-card">
+                  <div class="label">Avg first response</div>
+                  <div class="value">42m</div>
+                  <div class="meta">vs target 30m</div>
+                </div>
+              </div>
+
+              <!-- Queue configuration sections -->
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                <!-- Intents feeding this queue -->
+                <div class="card">
+                  <div class="row" style="margin-bottom: 12px;">
+                    <div class="heading-sm">Intents that feed this queue</div>
+                    <button class="btn btn-sm btn-tertiary ml-auto">Edit</button>
+                  </div>
+                  <div class="col" style="gap: 6px;">
+                    <div class="row" style="padding: 6px 0; border-bottom: 1px solid var(--border-neutral-default);">
+                      <span class="tag tag-sm">intent</span>
+                      <span class="medium-md">Returns &amp; refunds</span>
+                      <span class="regular-sm ml-auto">Primary</span>
+                    </div>
+                    <div class="row" style="padding: 6px 0; border-bottom: 1px solid var(--border-neutral-default);">
+                      <span class="tag tag-sm">intent</span>
+                      <span class="medium-md">Refund window exception</span>
+                      <span class="regular-sm ml-auto">Sub-intent</span>
+                    </div>
+                    <div class="row" style="padding: 6px 0;">
+                      <span class="tag tag-sm">intent</span>
+                      <span class="medium-md">Return label issues</span>
+                      <span class="regular-sm ml-auto">Sub-intent</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Capacity for this queue -->
+                <div class="card">
+                  <div class="row" style="margin-bottom: 12px;">
+                    <div class="heading-sm">Capacity rules</div>
+                    <button class="btn btn-sm btn-tertiary ml-auto">Edit</button>
+                  </div>
+                  <div class="col" style="gap: 4px;">
+                    <div class="row" style="padding: 4px 0;"><span class="medium-md">Per agent</span><span class="regular-sm ml-auto">8 concurrent</span></div>
+                    <div class="row" style="padding: 4px 0;"><span class="medium-md">Senior tier</span><span class="regular-sm ml-auto">10 concurrent</span></div>
+                    <div class="row" style="padding: 4px 0;"><span class="medium-md">Assignment</span><span class="regular-sm ml-auto">Push</span></div>
+                    <div class="row" style="padding: 4px 0;"><span class="medium-md">OOO blocking</span><span class="regular-sm ml-auto">On</span></div>
+                    <div class="row" style="padding: 4px 0;"><span class="medium-md">Cherry-pick</span><span class="regular-sm ml-auto">Allowed (backlog)</span></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Team for this queue -->
+              <div class="card">
+                <div class="row" style="margin-bottom: 12px;">
+                  <div class="heading-sm">Team (6 agents)</div>
+                  <div class="ml-auto row" style="gap: 8px;">
+                    <button class="btn btn-sm btn-tertiary">Manage team</button>
+                    <button class="btn btn-sm">Add agent</button>
+                  </div>
+                </div>
+                <div class="data-table" style="border: none; border-radius: 0;">
+                  <div class="data-table-head" style="grid-template-columns: 1.5fr 1fr 1fr 1fr 100px;">
+                    <div>Agent</div>
+                    <div>Tier</div>
+                    <div>Status</div>
+                    <div>Capacity</div>
+                    <div>Active load</div>
+                  </div>
+                  <div class="data-table-row" style="grid-template-columns: 1.5fr 1fr 1fr 1fr 100px;">
+                    <div class="primary-cell"><div class="avatar sm green">EW</div>Emma W.</div>
+                    <div class="regular-sm">Senior</div>
+                    <div><span class="tag success tag-sm"><span class="dot success"></span>Available</span></div>
+                    <div class="regular-sm">10 / agent</div>
+                    <div><div class="col" style="gap: 4px;"><div class="sla-bar"><span style="width:50%; background: var(--green-500);"></span></div><div class="regular-sm">5 of 10</div></div></div>
+                  </div>
+                  <div class="data-table-row" style="grid-template-columns: 1.5fr 1fr 1fr 1fr 100px;">
+                    <div class="primary-cell"><div class="avatar sm blue">RP</div>Ryan P.</div>
+                    <div class="regular-sm">Standard</div>
+                    <div><span class="tag success tag-sm"><span class="dot success"></span>Available</span></div>
+                    <div class="regular-sm">8 / agent</div>
+                    <div><div class="col" style="gap: 4px;"><div class="sla-bar"><span class="warning" style="width:88%;"></span></div><div class="regular-sm">7 of 8</div></div></div>
+                  </div>
+                  <div class="data-table-row" style="grid-template-columns: 1.5fr 1fr 1fr 1fr 100px;">
+                    <div class="primary-cell"><div class="avatar sm pink">TN</div>Tom N.</div>
+                    <div class="regular-sm">Standard</div>
+                    <div><span class="tag success tag-sm"><span class="dot success"></span>Available</span></div>
+                    <div class="regular-sm">8 / agent</div>
+                    <div><div class="col" style="gap: 4px;"><div class="sla-bar"><span class="error" style="width:100%;"></span></div><div class="regular-sm">8 of 8 · at cap</div></div></div>
+                  </div>
+                  <div class="data-table-row" style="grid-template-columns: 1.5fr 1fr 1fr 1fr 100px;">
+                    <div class="primary-cell"><div class="avatar sm amber">JL</div>Jess L.</div>
+                    <div class="regular-sm">Standard</div>
+                    <div><span class="tag warning tag-sm"><span class="dot warning"></span>Lunch</span></div>
+                    <div class="regular-sm">8 / agent</div>
+                    <div><div class="regular-sm">Paused</div></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- At-risk tickets -->
+              <div>
+                <div class="row" style="margin-bottom: 12px;">
+                  <div class="heading-md">At-risk tickets</div>
+                  <span class="regular-sm" style="margin-left: 8px;">16 sorted by time to breach</span>
+                </div>
+                <div class="data-table">
+                  <div class="data-table-head" style="grid-template-columns: 130px 1fr 140px 40px;">
+                    <div>Breach in</div>
+                    <div>Subject</div>
+                    <div>Customer</div>
+                    <div></div>
+                  </div>
+                  <div class="data-table-row" style="grid-template-columns: 130px 1fr 140px 40px;" onclick="goto('ticket')">
+                    <div><span class="tag error tag-sm">3m</span></div>
+                    <div class="primary-cell">#48211 — When will I get my refund? It's been a week.</div>
+                    <div class="regular-sm">VIP · $480 order</div>
+                    <div></div>
+                  </div>
+                  <div class="data-table-row" style="grid-template-columns: 130px 1fr 140px 40px;">
+                    <div><span class="tag warning tag-sm">12m</span></div>
+                    <div class="primary-cell">#48198 — I never received my return label</div>
+                    <div class="regular-sm">Standard</div>
+                    <div></div>
+                  </div>
+                  <div class="data-table-row" style="grid-template-columns: 130px 1fr 140px 40px;">
+                    <div><span class="tag warning tag-sm">18m</span></div>
+                    <div class="primary-cell">#48185 — Promo refund question — Memorial Day order</div>
+                    <div class="regular-sm">Standard</div>
+                    <div></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Gaia panel — proposed fix lives here -->
+          <aside class="gaia-panel">
+            <div class="gaia-header">
+              <div class="gaia-spark"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.5 6.5L20 10l-6.5 1.5L12 18l-1.5-6.5L4 10l6.5-1.5z"/></svg></div>
+              <div class="title">Gaia</div>
+              <button class="btn btn-icon btn-tertiary btn-sm" onclick="goto('routing-overview')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+            </div>
+            <div class="gaia-body" id="proactiveBody">
+              <div class="gaia-msg from-gaia"><div class="gaia-msg-bubble"><b>Heads up</b> — Returns &amp; refunds is backing up. Inflow is 3× normal because your Memorial Day promo started at 9:00.</div></div>
+
+              <!-- Proposed fix card inside the panel -->
+              <div class="gaia-msg from-gaia">
+                <div class="gaia-msg-bubble" style="background: white; border: 1px solid var(--border-additional-purple); max-width: 100%;">
+                  <div class="row" style="margin-bottom: 8px;">
+                    <span class="tag accent tag-sm"><span class="dot accent"></span> Proposed fix</span>
+                    <span class="regular-sm ml-auto">2-hour borrow</span>
+                  </div>
+                  <div class="medium-md" style="margin-bottom: 8px;">Borrow 3 agents from General support</div>
+                  <div style="border-top: 1px solid var(--border-neutral-default); padding-top: 10px;">
+                    <div class="bold-xs" style="text-transform: uppercase; color: var(--content-neutral-secondary); margin-bottom: 6px; letter-spacing: 0.08em;">Before → After</div>
+                    <div style="font-size: 11px; line-height: 16px;">
+                      <div>R&amp;R team → <s style="color: var(--content-neutral-tertiary);">6</s> <b style="color: var(--content-accent-default);">9 agents</b></div>
+                      <div>General team → <s style="color: var(--content-neutral-tertiary);">14</s> <b style="color: var(--content-accent-default);">11 agents</b></div>
+                      <div>R&amp;R SLA risk → <s style="color: var(--content-error-default);">16</s> <b style="color: var(--content-success-default);">≈ 2 tickets</b></div>
+                    </div>
+                  </div>
+                  <div class="bold-xs" style="text-transform: uppercase; color: var(--content-neutral-secondary); margin-top: 10px; margin-bottom: 6px; letter-spacing: 0.08em;">Borrowing</div>
+                  <div style="font-size: 11px; line-height: 16px;">
+                    <div><b>Emma W.</b> — least busy</div>
+                    <div><b>Ryan P.</b> — trained in returns</div>
+                    <div><b>Tom N.</b> — trained in returns</div>
+                  </div>
+                  <div class="row" style="margin-top: 10px; gap: 6px;">
+                    <button class="btn btn-sm">Swap</button>
+                    <button class="btn btn-sm">Duration</button>
+                    <button class="btn btn-sm btn-primary" style="margin-left: auto;" onclick="applyFix()">Apply</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="gaia-msg from-user"><div class="gaia-msg-bubble">Why not pull from VIP queue?</div></div>
+              <div class="gaia-msg from-gaia"><div class="gaia-msg-bubble">VIP is at 92% on-track but those tickets are higher-risk per ticket — pulling capacity there could create a worse problem. General has slack, R&amp;R needs help.</div></div>
+              <div class="gaia-msg from-user"><div class="gaia-msg-bubble">Makes sense. Apply but only for 90 min.</div></div>
+              <div class="gaia-msg from-gaia">
+                <div class="gaia-msg-bubble">
+                  Set to 90 minutes. I'll auto-revert at 10:52 and ping you if it's not enough.
+                  <div class="row" style="gap: 8px; margin-top: 8px;">
+                    <button class="btn btn-sm btn-primary" onclick="applyFix()">Apply now</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="gaia-input">
+              <div class="gaia-input-row">
+                <input type="text" placeholder="Adjust or ask follow-up…" />
+                <button class="gaia-send"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2" fill="currentColor"/></svg></button>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===============================================================
+       SCREEN 6 — BREACHED TICKET (Tickets > Inbox, with handover briefing)
+       =============================================================== -->
+  <section class="screen" id="screen-ticket" data-screen="ticket">
+    <div class="app">
+      <div data-mount="sidebar" data-active="tickets"></div>
+      <div class="main-area">
+        <div class="content-container has-subnav">
+          <aside class="subnav">
+            <div class="subnav-header">
+              <div class="product-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>
+              <span class="product-name">Tickets</span>
+              <svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+            <div class="subnav-account">
+              <div class="logo">A</div>
+              <div class="name">artemisathletix</div>
+              <div class="status"></div>
+            </div>
+            <div class="subnav-body">
+              <div class="subnav-item active">
+                <span class="ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/></svg></span>
+                All inbox <span class="count">142</span>
+              </div>
+              <div class="subnav-item">
+                <span class="ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>
+                SLA at risk <span class="count warning">11</span>
+              </div>
+              <div class="subnav-item">
+                <span class="ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 19 9 12 16 5 9 12 2"/></svg></span>
+                From AI <span class="count ai">28</span>
+              </div>
+              <div class="subnav-section-title">Workflows</div>
+              <div class="subnav-item"><span class="ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 3H6a2 2 0 00-2 2v14a2 2 0 002 2h12a2 2 0 002-2v-7"/><circle cx="18" cy="5" r="3"/></svg></span>Rules</div>
+              <div class="subnav-item"><span class="ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></span>Macros</div>
+              <div class="subnav-item"><span class="ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg></span>SLAs</div>
+              <div class="subnav-item" onclick="goto('routing-overview')"><span class="ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/></svg></span>Routing</div>
+            </div>
+          </aside>
+
+          <div class="main">
+            <div class="page-header">
+              <div class="page-header-title">
+                <div class="back-btn" onclick="goto('proactive')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg></div>
+                <div class="col" style="gap: 2px;">
+                  <h1 style="font-size: 16px;"><span class="text-subtle" style="font-weight: 400;">#48211</span> When will I get my refund? It's been a week.</h1>
+                  <div class="row" style="gap: 8px;">
+                    <span class="tag error tag-sm"><span class="dot error"></span> SLA breached · 2m ago</span>
+                    <span class="tag accent tag-sm">VIP</span>
+                  </div>
+                </div>
+                <div class="page-header-actions">
+                  <button class="btn btn-sm">Assign</button>
+                  <button class="btn btn-sm">Snooze</button>
+                  <button class="btn btn-sm btn-primary">Take ticket</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="page-body padded">
+              <!-- Briefing card -->
+              <div class="briefing-card">
+                <div class="briefing-header">
+                  <div class="gaia-spark"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.5 6.5L20 10l-6.5 1.5L12 18l-1.5-6.5L4 10l6.5-1.5z"/></svg></div>
+                  <div class="title">AI handover briefing</div>
+                  <span class="tag accent tag-sm">handed over 14 min ago</span>
+                </div>
+                <div class="briefing-body">
+                  <div class="briefing-row">
+                    <div class="key">Why escalated</div>
+                    <div>Customer asked for a refund-window exception. <b>I'm not authorized to grant exceptions</b>, so I handed over.</div>
+                  </div>
+                  <div class="briefing-row">
+                    <div class="key">What I learned</div>
+                    <div>Sarah ordered <b>2× UltraLite Joggers ($240)</b> on May 13. Delivered May 19. Requested refund May 24. Refund window is 5 days from delivery — she missed by 1 day, citing travel.</div>
+                  </div>
+                  <div class="briefing-row">
+                    <div class="key">Sentiment</div>
+                    <div><span class="tag warning tag-sm">Frustrated, churn-risk</span> — phrases like "really disappointed", "always shop here"</div>
+                  </div>
+                  <div class="briefing-row">
+                    <div class="key">Routed to</div>
+                    <div><b>Returns &amp; refunds queue</b> · matched intent "refund window exception" · priority 8/10 (VIP × SLA risk × sentiment)</div>
+                  </div>
+                  <div class="briefing-row">
+                    <div class="key">Why it breached</div>
+                    <div><b style="color: var(--content-error-default);">Queue was backed up</b> — entered queue 8:48, expected pickup in 30 min, no agent picked up before SLA. Gaia flagged the surge at 9:18 (<a href="#" onclick="goto('proactive'); return false;" style="color: var(--content-accent-default);">see callout</a>).</div>
+                  </div>
+                  <div class="briefing-row">
+                    <div class="key">Suggested next step</div>
+                    <div>
+                      Apologize for the delay, offer 1-time refund exception (within manager-approved policy), confirm email confirmation.
+                      <div class="row" style="gap: 8px; margin-top: 8px;">
+                        <button class="btn btn-sm">
+                          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.5 6.5L20 10l-6.5 1.5L12 18l-1.5-6.5L4 10l6.5-1.5z"/></svg>
+                          Draft response with Gaia
+                        </button>
+                        <button class="btn btn-sm">Approve exception</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Conversation thread -->
+              <div class="thread">
+                <div class="thread-msg">
+                  <div class="avatar pink">SC</div>
+                  <div class="thread-msg-body">
+                    <div class="thread-msg-meta">
+                      <span class="author">Sarah Coleman</span>
+                      <span>·</span>
+                      <span class="time">Yesterday 4:22 PM</span>
+                      <span class="tag tag-sm" style="margin-left: 4px;">Email</span>
+                    </div>
+                    <div class="thread-msg-content">
+                      Hi! I just got back from a 2-week trip and noticed I haven't started the return on the joggers I bought. I know I'm a day past the refund window but I'm a longtime customer and was hoping you could make an exception this once. Really disappointed if not — I always shop here for new gear.
+                    </div>
+                  </div>
+                </div>
+
+                <div class="thread-msg from-ai">
+                  <div class="avatar" style="background: linear-gradient(135deg, var(--coral-500) 0%, var(--purple-500) 100%);">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.5 6.5L20 10l-6.5 1.5L12 18l-1.5-6.5L4 10l6.5-1.5z"/></svg>
+                  </div>
+                  <div class="thread-msg-body">
+                    <div class="thread-msg-meta">
+                      <span class="author">AI Agent</span>
+                      <span class="tag accent tag-sm">handed over</span>
+                      <span class="time">Yesterday 4:23 PM</span>
+                    </div>
+                    <div class="thread-msg-content">
+                      Hi Sarah — thanks for reaching out, and welcome back! I can see your order #4881 (2× UltraLite Joggers) was delivered on May 19. Our refund window is normally 5 days from delivery. I'm not able to grant exceptions on my own — I'm passing this to our Returns team, who can review your account and confirm next steps. They'll be in touch shortly.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Customer context rail -->
+          <aside class="context-rail">
+            <div class="context-section">
+              <div class="row" style="gap: 12px; margin-bottom: 8px;">
+                <div class="avatar lg pink">SC</div>
+                <div class="col" style="gap: 0;">
+                  <div class="medium-md">Sarah Coleman</div>
+                  <div class="regular-sm">sarah.coleman@email.com</div>
+                </div>
+                <span class="tag accent tag-sm ml-auto">VIP</span>
+              </div>
+            </div>
+            <div class="context-section">
+              <div class="title">Customer</div>
+              <div class="context-row"><span class="l">Lifetime value</span><span class="v">$2,847</span></div>
+              <div class="context-row"><span class="l">Orders</span><span class="v">14</span></div>
+              <div class="context-row"><span class="l">Last CSAT</span><span class="v">5/5</span></div>
+              <div class="context-row"><span class="l">Tickets (90d)</span><span class="v">3</span></div>
+            </div>
+            <div class="context-section">
+              <div class="title">Why routed here</div>
+              <div class="regular-md" style="line-height: 20px;">
+                <b>Returns &amp; refunds</b><br/>
+                <span class="text-muted">Priority 8/10 (VIP × SLA risk × frustrated sentiment)</span>
+              </div>
+              <button class="btn btn-sm btn-tertiary" style="margin-top: 8px; padding: 4px 8px;">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/></svg>
+                Routing rationale
+              </button>
+            </div>
+            <div class="context-section">
+              <div class="title">Recent tickets</div>
+              <div class="col" style="gap: 0;">
+                <div class="context-row"><span class="dot success"></span><span class="medium-md" style="margin-left: 4px;">#46812 Sizing</span><span class="regular-sm ml-auto">Apr 14</span></div>
+                <div class="context-row"><span class="dot success"></span><span class="medium-md" style="margin-left: 4px;">#45211 Delivery</span><span class="regular-sm ml-auto">Mar 22</span></div>
+                <div class="context-row"><span class="dot success"></span><span class="medium-md" style="margin-left: 4px;">#43890 Promo</span><span class="regular-sm ml-auto">Feb 8</span></div>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+  const ORDER = ['intro', 'ai-onboarding', 'routing-onboarding', 'routing-overview', 'queues', 'proactive', 'spike', 'ticket'];
+
+  // Mount sidebar template into each screen
+  function mountSidebars() {
+    const sidebarTpl = document.getElementById('global-sidebar-template');
+    const subnavTpl = document.getElementById('tickets-subnav-template');
+    document.querySelectorAll('[data-mount="sidebar"]').forEach(slot => {
+      const active = slot.dataset.active;
+      const clone = sidebarTpl.content.cloneNode(true);
+      const sidebar = clone.querySelector('.sidebar');
+      sidebar.querySelectorAll('.sb-icon-btn').forEach(btn => {
+        if (btn.dataset.icon === active) btn.classList.add('active');
+      });
+      slot.replaceWith(sidebar);
+    });
+    document.querySelectorAll('[data-mount="tickets-subnav"]').forEach(slot => {
+      const active = slot.dataset.active;
+      const clone = subnavTpl.content.cloneNode(true);
+      const subnav = clone.querySelector('.subnav');
+      subnav.querySelectorAll('.subnav-item').forEach(item => {
+        item.classList.toggle('active', item.dataset.route === active);
+      });
+      slot.replaceWith(subnav);
+    });
+  }
+
+  function goto(name) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('is-active'));
+    const target = document.getElementById('screen-' + name);
+    if (target) {
+      target.classList.add('is-active');
+      target.scrollTop = 0;
+      target.querySelectorAll('.page-body, .conv-body, .gaia-body').forEach(el => el.scrollTop = 0);
+    }
+    updateProgress(name);
+    history.replaceState(null, '', '#' + name);
+  }
+
+  function updateProgress(active) {
+    const idx = ORDER.indexOf(active);
+    document.querySelectorAll('.proto-step').forEach(el => {
+      el.classList.remove('active', 'done');
+      const step = el.dataset.jump;
+      const stepIdx = ORDER.indexOf(step);
+      if (stepIdx === idx) el.classList.add('active');
+      else if (stepIdx < idx) el.classList.add('done');
+    });
+  }
+
+  document.querySelectorAll('.proto-step').forEach(btn => {
+    btn.addEventListener('click', () => goto(btn.dataset.jump));
+  });
+
+  window.addEventListener('keydown', e => {
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+    const current = document.querySelector('.screen.is-active');
+    if (!current) return;
+    const idx = ORDER.indexOf(current.dataset.screen);
+    if (e.key === 'ArrowRight' && idx < ORDER.length - 1) goto(ORDER[idx + 1]);
+    if (e.key === 'ArrowLeft' && idx > 0) goto(ORDER[idx - 1]);
+  });
+
+  function answer(el, text) {
+    const card = el.closest('.conv-question');
+    const userMsg = document.createElement('div');
+    userMsg.className = 'conv-msg from-user';
+    userMsg.textContent = text;
+    card.parentElement.insertBefore(userMsg, card);
+    card.remove();
+    document.getElementById('ai-cont-1').style.display = 'block';
+  }
+
+  function advanceRouting(el, turn, text) {
+    const card = el.closest('.conv-question');
+    const userMsg = document.createElement('div');
+    userMsg.className = 'conv-msg from-user';
+    userMsg.textContent = text;
+    card.parentElement.insertBefore(userMsg, card);
+    card.remove();
+    if (turn === 'turn1') document.getElementById('routing-turn-2').style.display = 'block';
+    if (turn === 'turn2') document.getElementById('routing-turn-3').style.display = 'block';
+  }
+
+  function applyFix() {
+    const body = document.getElementById('proactiveBody');
+    if (!body) return;
+    const node = document.createElement('div');
+    node.className = 'gaia-msg from-gaia';
+    node.innerHTML = `
+      <div class="gaia-msg-bubble">
+        <div class="row" style="gap: 6px; color: var(--content-success-default); font-weight: 500; font-size: 12px;">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+          Applied at 9:24 — auto-reverts at 10:54
+        </div>
+        <div class="row" style="gap: 8px; margin-top: 8px;">
+          <button class="btn btn-sm" onclick="goto('ticket')">Open most-at-risk ticket →</button>
+        </div>
+      </div>`;
+    body.appendChild(node);
+    body.scrollTop = body.scrollHeight;
+  }
+
+  mountSidebars();
+  const initial = window.location.hash.replace('#', '') || ORDER[0];
+  goto(ORDER.includes(initial) ? initial : ORDER[0]);
+</script>
+
+</body>
+</html>
