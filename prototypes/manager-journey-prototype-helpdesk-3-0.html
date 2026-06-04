@@ -1518,6 +1518,403 @@
   .context-row .v { margin-left: auto; font-weight: 500; }
 
   /* ====================================================================
+     QUEUE CONFIG BLOCKS (post-meeting-notes refactor)
+  ===================================================================== */
+  .config-block {
+    background: var(--elevation-neutral-mid);
+    border: 1px solid var(--border-neutral-default);
+    border-radius: var(--radius-sm);
+    padding: 20px 24px;
+    box-shadow: var(--effects-shadow-container);
+  }
+  .config-block-header {
+    display: flex; align-items: center; gap: 8px;
+    margin-bottom: 12px;
+  }
+  .config-block-header .title {
+    font-size: 14px; font-weight: 600;
+    color: var(--content-neutral-default);
+    flex: 1;
+  }
+  .config-block-header .meta {
+    font-size: 12px; color: var(--content-neutral-secondary);
+    letter-spacing: 0.12px;
+  }
+  .config-block-desc {
+    font-size: 12px; color: var(--content-neutral-secondary);
+    letter-spacing: 0.12px;
+    margin-bottom: 12px;
+    line-height: 16px;
+  }
+
+  /* Feeder chips (intent + channel + integration + tag) */
+  .feeder-list {
+    display: flex; flex-wrap: wrap; gap: 6px;
+    align-items: center;
+  }
+  .feeder-chip {
+    display: inline-flex; align-items: center; gap: 6px;
+    height: 28px;
+    padding: 0 4px 0 8px;
+    border-radius: 999px;
+    background: var(--elevation-neutral-default);
+    border: 1px solid var(--border-neutral-default);
+    font-size: 12px; font-weight: 500;
+  }
+  .feeder-chip .type {
+    font-size: 10px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    padding: 1px 6px;
+    border-radius: 999px;
+  }
+  .feeder-chip .type.intent      { background: var(--surface-accent-default); color: var(--content-accent-default); }
+  .feeder-chip .type.channel     { background: var(--blue-50); color: var(--blue-600); }
+  .feeder-chip .type.integration { background: var(--surface-additional-coral); color: var(--content-additional-coral); }
+  .feeder-chip .type.tag         { background: var(--green-50); color: var(--content-success-default); }
+  .feeder-chip .remove {
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    color: var(--content-neutral-tertiary);
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .feeder-chip .remove:hover { background: var(--hover-default); color: var(--content-neutral-default); }
+  .feeder-add {
+    display: inline-flex; align-items: center; gap: 4px;
+    height: 28px;
+    padding: 0 12px;
+    border-radius: 999px;
+    border: 1px dashed var(--border-neutral-default);
+    background: transparent;
+    font-size: 12px; font-weight: 500;
+    color: var(--content-neutral-secondary);
+  }
+  .feeder-add:hover {
+    background: var(--hover-default);
+    color: var(--content-neutral-default);
+    border-color: var(--border-neutral-secondary);
+  }
+
+  /* Ordering signals — drag-reorder list */
+  .signal-list { display: flex; flex-direction: column; }
+  .signal-row-new {
+    display: grid;
+    grid-template-columns: 20px 24px 1.1fr 1.5fr 110px 80px;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 4px;
+    border-bottom: 1px solid var(--border-neutral-default);
+    cursor: grab;
+    transition: background 120ms;
+  }
+  .signal-row-new:last-child { border-bottom: none; }
+  .signal-row-new:hover { background: var(--hover-default); }
+  .signal-row-new .drag { color: var(--content-neutral-tertiary); display: flex; align-items: center; justify-content: center; }
+  .signal-row-new .order {
+    width: 24px; height: 24px; border-radius: 50%;
+    background: var(--surface-accent-default);
+    color: var(--content-accent-default);
+    font-size: 11px; font-weight: 600;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .signal-row-new .signal-name {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 14px; font-weight: 500;
+  }
+  .signal-row-new .signal-name .icon { color: var(--content-neutral-secondary); display: flex; }
+  .signal-row-new .signal-desc {
+    font-size: 12px;
+    color: var(--content-neutral-secondary);
+    letter-spacing: 0.12px;
+  }
+  .signal-row-new .signal-weight { display: flex; flex-direction: column; gap: 4px; }
+  .signal-row-new .signal-weight .bar {
+    height: 6px; background: var(--surface-neutral-secondary); border-radius: 3px; overflow: hidden;
+  }
+  .signal-row-new .signal-weight .bar > span { display: block; height: 100%; background: var(--purple-500); }
+  .signal-row-new .signal-weight .label { font-size: 11px; color: var(--content-neutral-secondary); letter-spacing: 0.12px; }
+  .signal-row-new .signal-actions { display: flex; justify-content: flex-end; gap: 4px; }
+
+  /* Channel availability card rows */
+  .channel-row {
+    display: flex; align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border-neutral-default);
+  }
+  .channel-row:last-child { border-bottom: none; }
+  .channel-row .channel-info { display: flex; align-items: center; gap: 10px; flex: 1; }
+  .channel-row .channel-icon {
+    width: 32px; height: 32px; border-radius: var(--radius-xs);
+    background: var(--surface-neutral-secondary);
+    color: var(--content-neutral-secondary);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .channel-row .name { font-size: 14px; font-weight: 500; }
+  .channel-row .desc { font-size: 12px; color: var(--content-neutral-secondary); letter-spacing: 0.12px; }
+  .channel-row .toggle {
+    width: 32px; height: 20px;
+    background: var(--surface-neutral-tertiary);
+    border-radius: 10px;
+    position: relative;
+    flex-shrink: 0;
+  }
+  .channel-row .toggle::after {
+    content: ''; position: absolute; top: 2px; left: 2px;
+    width: 16px; height: 16px; background: white; border-radius: 50%;
+    box-shadow: var(--effects-shadow-component);
+    transition: left 200ms var(--motion-micro);
+  }
+  .channel-row.on .toggle { background: var(--content-accent-default); }
+  .channel-row.on .toggle::after { left: 14px; }
+
+  /* Inline note */
+  .inline-note {
+    display: flex; align-items: center; gap: 8px;
+    padding: 10px 12px;
+    background: var(--surface-neutral-primary);
+    border-radius: var(--radius-xs);
+    border: 1px dashed var(--border-neutral-default);
+    font-size: 12px;
+    color: var(--content-neutral-secondary);
+    letter-spacing: 0.12px;
+  }
+  .inline-note .ml-link {
+    margin-left: auto;
+    font-size: 12px; font-weight: 600;
+    color: var(--content-accent-default);
+    background: transparent;
+  }
+
+  /* Auto-assignment radio row */
+  .radio-row { display: flex; gap: 12px; }
+  .radio-card {
+    display: flex; gap: 12px;
+    padding: 14px;
+    border: 1px solid var(--border-neutral-default);
+    border-radius: var(--radius-xs);
+    cursor: pointer;
+    flex: 1;
+  }
+  .radio-card:hover { background: var(--hover-default); }
+  .radio-card.selected {
+    border-color: var(--border-accent-default);
+    background: var(--surface-accent-default);
+  }
+  .radio-card .radio {
+    width: 16px; height: 16px;
+    border: 1.5px solid var(--border-neutral-secondary);
+    border-radius: 50%;
+    flex-shrink: 0; margin-top: 2px;
+    background: white;
+  }
+  .radio-card.selected .radio {
+    border-color: var(--content-accent-default);
+    border-width: 5px;
+  }
+  .radio-card .label { font-size: 13px; font-weight: 600; }
+  .radio-card .desc { font-size: 12px; color: var(--content-neutral-secondary); letter-spacing: 0.12px; margin-top: 4px; }
+
+  /* Agent channel availability chips (small) */
+  .ch-chips { display: inline-flex; gap: 3px; }
+  .ch-chips .ch {
+    width: 24px; height: 20px;
+    border-radius: var(--radius-xxxs);
+    background: var(--surface-neutral-secondary);
+    color: var(--content-neutral-tertiary);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 600; letter-spacing: 0.04em;
+  }
+  .ch-chips .ch.on { background: var(--surface-accent-default); color: var(--content-accent-default); }
+
+  /* ============ Queue team — avatar stack + add ============ */
+  .team-cell {
+    display: flex; align-items: center; gap: 8px;
+  }
+  .avatar-stack { display: inline-flex; align-items: center; }
+  .avatar-stack .avatar {
+    border: 2px solid var(--elevation-neutral-default);
+    margin-left: -6px;
+    cursor: pointer;
+    transition: transform 150ms var(--motion-micro);
+  }
+  .avatar-stack .avatar:first-child { margin-left: 0; }
+  .avatar-stack .avatar:hover { transform: translateY(-2px); z-index: 2; }
+  .avatar-stack .avatar.more {
+    background: var(--surface-neutral-secondary);
+    color: var(--content-neutral-secondary);
+    font-weight: 600;
+  }
+  .team-cell .add-agent {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    border: 1px dashed var(--border-neutral-default);
+    background: transparent;
+    color: var(--content-neutral-tertiary);
+    display: inline-flex; align-items: center; justify-content: center;
+    margin-left: 4px;
+    cursor: pointer;
+  }
+  .team-cell .add-agent:hover {
+    background: var(--hover-default);
+    color: var(--content-neutral-default);
+    border-color: var(--border-neutral-secondary);
+    border-style: solid;
+  }
+  .team-cell .count {
+    font-size: 12px;
+    color: var(--content-neutral-tertiary);
+    letter-spacing: 0.12px;
+    margin-left: 4px;
+  }
+
+  /* ============ Agents page controls ============ */
+  /* Bulk action bar — sticky at top of body when selections exist */
+  .bulk-bar {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 16px;
+    background: var(--surface-inverted-default);
+    color: var(--content-inverted-default);
+    border-radius: var(--radius-xs);
+    box-shadow: var(--effects-shadow-container);
+  }
+  .bulk-bar .count {
+    font-size: 13px; font-weight: 600;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .bulk-bar .count .badge {
+    background: var(--purple-500);
+    color: white;
+    padding: 1px 8px;
+    border-radius: 999px;
+    font-size: 11px; font-weight: 700;
+  }
+  .bulk-bar .actions { margin-left: auto; display: flex; gap: 6px; align-items: center; }
+  .bulk-bar .btn-bulk {
+    height: 28px;
+    padding: 0 10px;
+    background: rgba(255,255,255,0.08);
+    color: white;
+    border: 1px solid rgba(255,255,255,0.16);
+    border-radius: var(--radius-xxs);
+    font-size: 12px; font-weight: 600;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .bulk-bar .btn-bulk:hover { background: rgba(255,255,255,0.14); }
+  .bulk-bar .clear {
+    background: transparent;
+    border: none;
+    color: rgba(255,255,255,0.7);
+    font-size: 12px;
+    margin-left: 4px;
+  }
+  .bulk-bar .clear:hover { color: white; }
+
+  /* Checkbox cell */
+  .table-checkbox {
+    display: flex; align-items: center; justify-content: center;
+    width: 16px; height: 16px;
+    border-radius: var(--radius-xxxs);
+    border: 1px solid var(--border-neutral-secondary);
+    background: white;
+    box-shadow: var(--effects-inner-light);
+    cursor: pointer;
+  }
+  .table-checkbox.checked {
+    background: var(--content-accent-default);
+    border-color: var(--content-accent-default);
+    color: white;
+  }
+  .table-checkbox.checked svg { display: block; }
+  .table-checkbox svg { display: none; }
+  .data-table-row.selected { background: var(--surface-accent-default); }
+  .data-table-row.selected:hover { background: var(--purple-100); }
+
+  /* Inline tier select (looks like a select button) */
+  .inline-select {
+    display: inline-flex; align-items: center; gap: 4px;
+    height: 24px;
+    padding: 0 6px 0 8px;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: var(--radius-xxs);
+    font-size: 13px; font-weight: 400;
+    color: var(--content-neutral-default);
+    cursor: pointer;
+  }
+  .inline-select:hover {
+    background: var(--elevation-neutral-default);
+    border-color: var(--border-neutral-default);
+  }
+  .inline-select svg { color: var(--content-neutral-tertiary); }
+
+  /* Queue chips (assignment chips) — smaller variant of feeder chips */
+  .queue-chips {
+    display: flex; flex-wrap: wrap; gap: 4px;
+    align-items: center;
+  }
+  .queue-chip {
+    display: inline-flex; align-items: center; gap: 4px;
+    height: 22px;
+    padding: 0 4px 0 8px;
+    border-radius: var(--radius-xxs);
+    background: var(--surface-neutral-secondary);
+    color: var(--content-neutral-default);
+    font-size: 11px; font-weight: 500;
+  }
+  .queue-chip .remove {
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--content-neutral-tertiary);
+    cursor: pointer;
+  }
+  .queue-chip .remove:hover { background: var(--hover-default); color: var(--content-neutral-default); }
+  .queue-chip-add {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 22px; height: 22px;
+    border-radius: var(--radius-xxs);
+    border: 1px dashed var(--border-neutral-default);
+    background: transparent;
+    color: var(--content-neutral-tertiary);
+    cursor: pointer;
+  }
+  .queue-chip-add:hover {
+    background: var(--hover-default);
+    color: var(--content-neutral-default);
+    border-color: var(--border-neutral-secondary);
+  }
+
+  /* Status select (inline, looks like a tag but with chevron) */
+  .status-select {
+    display: inline-flex; align-items: center; gap: 4px;
+    height: 22px;
+    padding: 0 6px;
+    border-radius: var(--radius-xxxs);
+    font-size: 12px; font-weight: 600;
+    letter-spacing: 0.12px;
+    cursor: pointer;
+  }
+  .status-select .dot { width: 8px; height: 8px; }
+  .status-select svg { opacity: 0.6; }
+  .status-select.available { background: var(--surface-success-default); color: var(--content-success-default); }
+  .status-select.away      { background: var(--surface-warning-default); color: var(--content-warning-default); }
+  .status-select.ooo       { background: var(--surface-neutral-secondary); color: var(--content-neutral-secondary); }
+
+  /* Adaptive-weight callout (used in Ordering signals card) */
+  .adaptive-callout {
+    display: flex; align-items: flex-start; gap: 8px;
+    padding: 10px 12px;
+    background: var(--surface-additional-purple);
+    border: 1px solid var(--border-additional-purple);
+    border-radius: var(--radius-xs);
+    margin-bottom: 12px;
+    font-size: 12px;
+    color: var(--content-accent-default);
+    line-height: 16px;
+    letter-spacing: 0.12px;
+  }
+  .adaptive-callout svg { flex-shrink: 0; margin-top: 1px; }
+
+  /* ====================================================================
      UTILS
      ==================================================================== */
   .row { display: flex; align-items: center; gap: 8px; }
@@ -1557,13 +1954,13 @@
     <span class="proto-divider"></span>
     <button class="proto-step" data-jump="routing-onboarding"><span class="num">2</span>Routing setup</button>
     <span class="proto-divider"></span>
-    <button class="proto-step" data-jump="routing-overview"><span class="num">3</span>Overview</button>
+    <button class="proto-step" data-jump="queues"><span class="num">3</span>Queues</button>
     <span class="proto-divider"></span>
-    <button class="proto-step" data-jump="queues"><span class="num">4</span>Queues</button>
+    <button class="proto-step" data-jump="proactive"><span class="num">4</span>Queue detail</button>
     <span class="proto-divider"></span>
-    <button class="proto-step" data-jump="proactive"><span class="num">5</span>Queue detail</button>
+    <button class="proto-step" data-jump="agents"><span class="num">5</span>Agents</button>
     <span class="proto-divider"></span>
-    <button class="proto-step" data-jump="spike"><span class="num">6</span>Signals</button>
+    <button class="proto-step" data-jump="spike"><span class="num">6</span>Spike</button>
     <span class="proto-divider"></span>
     <button class="proto-step" data-jump="ticket"><span class="num">7</span>Ticket</button>
   </div>
@@ -1806,14 +2203,14 @@
           </div>
 
           <div class="completion-actions">
-            <button class="btn" onclick="goto('routing-overview')">Take me to my inbox</button>
+            <button class="btn" onclick="goto('queues')">Take me to my inbox</button>
             <button class="btn btn-primary" onclick="goto('routing-onboarding')">
               Set up routing
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
             </button>
           </div>
 
-          <button class="completion-tertiary" onclick="goto('routing-overview')">
+          <button class="completion-tertiary" onclick="goto('queues')">
             Or review my AI Agent skills first
           </button>
         </div>
@@ -1828,7 +2225,7 @@
     <div class="conv-shell">
       <div data-mount="sidebar" data-active="tickets"></div>
 
-      <button class="conv-finish" onclick="goto('routing-overview')">Finish later</button>
+      <button class="conv-finish" onclick="goto('queues')">Finish later</button>
 
       <div class="conv-body" id="routingConvBody">
         <div class="conv-inner">
@@ -1851,7 +2248,7 @@
               <div class="icon-box"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 19 9 12 16 5 9 12 2"/></svg></div>
               <div class="body">
                 <div class="label">VIP & wholesale</div>
-                <div class="desc">12% of your tickets · senior agents (4) · priority routing</div>
+                <div class="desc">12% of your tickets · <b>Chat-only</b> · senior agents (4) · priority routing</div>
               </div>
               <div class="actions"><span class="ready-pill">Ready to enable</span><button class="btn btn-sm">View</button></div>
             </div>
@@ -1859,7 +2256,7 @@
               <div class="icon-box"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V7"/><polyline points="3 7 12 13 21 7"/></svg></div>
               <div class="body">
                 <div class="label">Returns & refunds</div>
-                <div class="desc">28% of your tickets · returns specialists (6)</div>
+                <div class="desc">28% of your tickets · returns specialists (6) · <span style="color: var(--content-accent-default);">add <code>cancel</code> tag? →</span></div>
               </div>
               <div class="actions"><span class="ready-pill">Ready to enable</span><button class="btn btn-sm">View</button></div>
             </div>
@@ -1959,7 +2356,7 @@
               Enabled 3 priority signals
             </div>
 
-            <p class="conv-msg">Last thing — <b>agent capacity</b>. How many tickets the system will assign to one person at a time.</p>
+            <p class="conv-msg">Last thing — defaults for <b>agent capacity</b> and <b>channel availability</b>. You can tune each per agent later.</p>
 
             <div class="conv-card-list">
               <div class="conv-card">
@@ -1970,24 +2367,32 @@
                 </div>
               </div>
               <div class="conv-card">
-                <div class="icon-box"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/></svg></div>
+                <div class="icon-box"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22 6 12 13 2 6"/></svg></div>
                 <div class="body">
-                  <div class="label">OOO &amp; status</div>
-                  <div class="desc">Routing pauses automatically when agents are unavailable</div>
+                  <div class="label">Channel availability</div>
+                  <div class="desc">Available for everything — Email, Chat, Voice. Restrict per agent later.</div>
                 </div>
+              </div>
+              <div class="conv-card" style="background: var(--surface-neutral-primary); border-style: dashed;">
+                <div class="icon-box" style="background: var(--surface-neutral-secondary); color: var(--content-neutral-secondary);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+                <div class="body">
+                  <div class="label">OOO &amp; PTO awareness</div>
+                  <div class="desc">Connect agent calendars to auto-pause routing during OOO. Set up later.</div>
+                </div>
+                <div class="actions"><button class="btn btn-sm">Set up later</button></div>
               </div>
             </div>
 
             <div class="conv-question" style="margin-top: 16px;">
               <div class="q-head">Apply this configuration?</div>
-              <div class="conv-option recommended" onclick="goto('routing-overview')">
+              <div class="conv-option recommended" onclick="goto('queues')">
                 <div class="num">1</div>
                 <div class="opt-body">
                   <div class="opt-label">Turn routing on <span class="recommended-tag">Recommended</span></div>
                   <div class="opt-desc">Routes go live immediately. Reversible.</div>
                 </div>
               </div>
-              <div class="conv-option" onclick="goto('routing-overview')">
+              <div class="conv-option" onclick="goto('queues')">
                 <div class="num">2</div>
                 <div class="opt-body">
                   <div class="opt-label">Save as draft</div>
@@ -2003,165 +2408,8 @@
   </section>
 
   <!-- ===============================================================
-       SCREEN 3 — ROUTING OVERVIEW (Tickets > Workflows > Routing)
-       =============================================================== -->
-  <section class="screen" id="screen-routing-overview" data-screen="routing-overview">
-    <div class="app">
-      <div data-mount="sidebar" data-active="tickets"></div>
-      <div class="main-area">
-        <div class="content-container has-subnav">
-          <div data-mount="tickets-subnav" data-active="routing"></div>
-
-          <div class="main">
-            <div class="page-header">
-              <div class="page-header-title">
-                <h1>Routing</h1>
-                <div class="page-header-actions">
-                  <button class="btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 019-9 9.75 9.75 0 016.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>Activity</button>
-                  <button class="btn">Test routing</button>
-                  <button class="btn btn-icon btn-tertiary"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></button>
-                </div>
-              </div>
-              <div class="page-header-tabs">
-                <div class="tab active">Overview</div>
-                <div class="tab" onclick="goto('queues')">Queues</div>
-                <div class="tab" onclick="goto('spike')">Signals</div>
-                <div class="tab">Capacity</div>
-                <div class="tab">Activity</div>
-              </div>
-            </div>
-
-            <div class="page-body padded">
-              <!-- Copilot banner -->
-              <div class="copilot-banner">
-                <span class="ai-icon"></span>
-                <div class="copy"><b>Gaia noticed something.</b> Returns &amp; refunds is backing up — 30% of tickets will breach SLA in the next 2 hours.</div>
-                <div class="actions">
-                  <button class="btn btn-primary" onclick="goto('proactive')">Review fix</button>
-                  <button class="btn">Dismiss</button>
-                </div>
-              </div>
-
-              <!-- Metric cards -->
-              <div class="metric-grid">
-                <div class="metric-card">
-                  <div class="label">AI resolution</div>
-                  <div class="value">63%
-                    <span class="delta up"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>4%</span>
-                  </div>
-                  <div class="meta">vs last week</div>
-                </div>
-                <div class="metric-card">
-                  <div class="label">Live in queues</div>
-                  <div class="value">142</div>
-                  <div class="meta">28 escalated by AI</div>
-                </div>
-                <div class="metric-card">
-                  <div class="label">SLA at risk</div>
-                  <div class="value">11
-                    <span class="delta down"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>6</span>
-                  </div>
-                  <div class="meta">in last hour</div>
-                </div>
-                <div class="metric-card">
-                  <div class="label">CSAT (24h)</div>
-                  <div class="value">4.6<span style="font-size: 14px; color: var(--content-neutral-tertiary); font-weight: 500;">/5</span>
-                    <span class="delta up"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>0.2</span>
-                  </div>
-                  <div class="meta">vs last week</div>
-                </div>
-              </div>
-
-              <!-- Queue health table -->
-              <div>
-                <div class="row" style="margin-bottom: 12px;">
-                  <div class="heading-md">Queue health</div>
-                  <div class="ml-auto row" style="gap: 8px;">
-                    <button class="btn btn-sm">Last 24h</button>
-                  </div>
-                </div>
-                <div class="data-table">
-                  <div class="data-table-head" style="grid-template-columns: 1.5fr 1.2fr 0.7fr 1fr 0.8fr 40px;">
-                    <div>Queue</div>
-                    <div>SLA health</div>
-                    <div>Live</div>
-                    <div>Team</div>
-                    <div>Trend</div>
-                    <div></div>
-                  </div>
-                  <div class="data-table-row" style="grid-template-columns: 1.5fr 1.2fr 0.7fr 1fr 0.8fr 40px;" onclick="goto('queues')">
-                    <div class="primary-cell"><div class="avatar sm purple">VS</div>VIP &amp; wholesale</div>
-                    <div><div class="col" style="gap: 4px;"><div class="sla-bar"><span style="width:92%"></span></div><div class="regular-sm">92% on track</div></div></div>
-                    <div>14</div>
-                    <div class="regular-sm">Senior · 4</div>
-                    <div><span class="tag success tag-sm">↑ healthy</span></div>
-                    <div></div>
-                  </div>
-                  <div class="data-table-row alert" style="grid-template-columns: 1.5fr 1.2fr 0.7fr 1fr 0.8fr 40px;" onclick="goto('proactive')">
-                    <div class="primary-cell"><div class="avatar sm green">RT</div>Returns &amp; refunds <span class="tag warning tag-sm">attention</span></div>
-                    <div><div class="col" style="gap: 4px;"><div class="sla-bar"><span class="warning" style="width:68%"></span></div><div style="color: var(--content-warning-default); font-size: 12px;">68% · 30% will breach</div></div></div>
-                    <div>52</div>
-                    <div class="regular-sm">Returns · 6</div>
-                    <div><span class="tag warning tag-sm">↓ backed up</span></div>
-                    <div></div>
-                  </div>
-                  <div class="data-table-row" style="grid-template-columns: 1.5fr 1.2fr 0.7fr 1fr 0.8fr 40px;">
-                    <div class="primary-cell"><div class="avatar sm blue">GS</div>General support</div>
-                    <div><div class="col" style="gap: 4px;"><div class="sla-bar"><span style="width:88%"></span></div><div class="regular-sm">88% on track</div></div></div>
-                    <div>76</div>
-                    <div class="regular-sm">All · 14</div>
-                    <div><span class="tag success tag-sm">↑ healthy</span></div>
-                    <div></div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Active configuration summary -->
-              <div>
-                <div class="row" style="margin-bottom: 12px;">
-                  <div class="heading-md">Active configuration</div>
-                  <div class="ml-auto regular-sm">Last change · 4 min ago by Gaia</div>
-                </div>
-                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px;">
-                  <div class="card">
-                    <div class="bold-sm" style="text-transform: uppercase; color: var(--content-neutral-secondary); margin-bottom: 12px;">Priority signals</div>
-                    <div class="col" style="gap: 4px;">
-                      <div class="row"><span class="dot accent"></span><span class="medium-md">Customer value</span><span class="regular-sm ml-auto">85%</span></div>
-                      <div class="row"><span class="dot accent"></span><span class="medium-md">SLA risk</span><span class="regular-sm ml-auto">75%</span></div>
-                      <div class="row"><span class="dot accent"></span><span class="medium-md">Sentiment</span><span class="regular-sm ml-auto">60%</span></div>
-                    </div>
-                  </div>
-                  <div class="card">
-                    <div class="bold-sm" style="text-transform: uppercase; color: var(--content-neutral-secondary); margin-bottom: 12px;">Capacity</div>
-                    <div class="col" style="gap: 4px;">
-                      <div class="row"><span class="medium-md">Default</span><span class="regular-sm ml-auto">8 concurrent</span></div>
-                      <div class="row"><span class="medium-md">Senior agents</span><span class="regular-sm ml-auto">10 concurrent</span></div>
-                      <div class="row"><span class="medium-md">Assignment</span><span class="regular-sm ml-auto">Push</span></div>
-                      <div class="row"><span class="medium-md">OOO blocking</span><span class="regular-sm ml-auto">On</span></div>
-                    </div>
-                  </div>
-                  <div class="card">
-                    <div class="bold-sm" style="text-transform: uppercase; color: var(--content-neutral-secondary); margin-bottom: 12px;">Channels</div>
-                    <div class="col" style="gap: 4px;">
-                      <div class="row"><span class="dot success"></span><span class="medium-md">Email</span><span class="regular-sm ml-auto">Live</span></div>
-                      <div class="row"><span class="dot success"></span><span class="medium-md">Chat</span><span class="regular-sm ml-auto">Live</span></div>
-                      <div class="row"><span class="dot success"></span><span class="medium-md">Voice</span><span class="regular-sm ml-auto">Live</span></div>
-                      <div class="row"><span class="dot"></span><span class="medium-md">SMS</span><span class="regular-sm ml-auto">Off</span></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===============================================================
-       SCREEN 4 — QUEUES LIST (Routing > Queues tab)
-       List of all queues with status + per-queue actions.
+       SCREEN 3 — QUEUES LIST (Routing default landing)
+       Overview tab merged into Queues — same content, removed redundancy.
        Click into a queue → Queue detail (proactive screen).
        =============================================================== -->
   <section class="screen" id="screen-queues" data-screen="queues">
@@ -2184,11 +2432,8 @@
                 </div>
               </div>
               <div class="page-header-tabs">
-                <div class="tab" onclick="goto('routing-overview')">Overview</div>
                 <div class="tab active">Queues</div>
-                <div class="tab" onclick="goto('spike')">Signals</div>
-                <div class="tab">Capacity</div>
-                <div class="tab">Activity</div>
+                <div class="tab" onclick="goto('agents')">Agents</div>
               </div>
               <div class="page-header-count">
                 3 queues
@@ -2211,7 +2456,7 @@
 
               <!-- Queues table -->
               <div class="data-table">
-                <div class="data-table-head" style="grid-template-columns: 1.5fr 1fr 0.6fr 1fr 1fr 40px;">
+                <div class="data-table-head" style="grid-template-columns: 1.4fr 0.8fr 0.5fr 1.5fr 1.1fr 40px;">
                   <div>Queue</div>
                   <div>Status</div>
                   <div>Live</div>
@@ -2219,33 +2464,62 @@
                   <div>SLA health (24h)</div>
                   <div></div>
                 </div>
-                <div class="data-table-row" style="grid-template-columns: 1.5fr 1fr 0.6fr 1fr 1fr 40px;">
+                <div class="data-table-row" style="grid-template-columns: 1.4fr 0.8fr 0.5fr 1.5fr 1.1fr 40px;">
                   <div class="primary-cell"><div class="avatar sm purple">VS</div>VIP &amp; wholesale</div>
                   <div><span class="tag accent tag-sm">priority</span></div>
                   <div>14</div>
-                  <div class="regular-sm">Senior agents · 4</div>
+                  <div class="team-cell">
+                    <span class="avatar-stack">
+                      <span class="avatar sm purple">SK</span>
+                      <span class="avatar sm purple">MR</span>
+                      <span class="avatar sm green">EW</span>
+                      <span class="avatar sm more">+1</span>
+                    </span>
+                    <span class="count">4 senior</span>
+                    <button class="add-agent" title="Add agent"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+                  </div>
                   <div><div class="col" style="gap: 4px;"><div class="sla-bar"><span style="width:92%"></span></div><div class="regular-sm">92% on track</div></div></div>
                   <div><button class="btn btn-icon btn-tertiary btn-sm"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></button></div>
                 </div>
-                <div class="data-table-row alert" style="grid-template-columns: 1.5fr 1fr 0.6fr 1fr 1fr 40px;" onclick="goto('proactive')">
+                <div class="data-table-row alert" style="grid-template-columns: 1.4fr 0.8fr 0.5fr 1.5fr 1.1fr 40px;" onclick="goto('proactive')">
                   <div class="primary-cell"><div class="avatar sm green">RT</div>Returns &amp; refunds <span class="tag warning tag-sm">attention</span></div>
                   <div><span class="tag tag-sm">intent</span></div>
                   <div>52</div>
-                  <div class="regular-sm">Returns team · 6</div>
+                  <div class="team-cell">
+                    <span class="avatar-stack">
+                      <span class="avatar sm green">EW</span>
+                      <span class="avatar sm blue">RP</span>
+                      <span class="avatar sm pink">TN</span>
+                      <span class="avatar sm amber">JL</span>
+                      <span class="avatar sm more">+2</span>
+                    </span>
+                    <span class="count">6 agents</span>
+                    <button class="add-agent" title="Add agent" onclick="event.stopPropagation();"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+                  </div>
                   <div><div class="col" style="gap: 4px;"><div class="sla-bar"><span class="warning" style="width:68%"></span></div><div style="color: var(--content-warning-default); font-size: 12px;">68% · 30% will breach</div></div></div>
                   <div><button class="btn btn-icon btn-tertiary btn-sm"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></button></div>
                 </div>
-                <div class="data-table-row" style="grid-template-columns: 1.5fr 1fr 0.6fr 1fr 1fr 40px;">
+                <div class="data-table-row" style="grid-template-columns: 1.4fr 0.8fr 0.5fr 1.5fr 1.1fr 40px;">
                   <div class="primary-cell"><div class="avatar sm blue">GS</div>General support</div>
                   <div><span class="tag tag-sm">fallback</span></div>
                   <div>76</div>
-                  <div class="regular-sm">All agents · 14</div>
+                  <div class="team-cell">
+                    <span class="avatar-stack">
+                      <span class="avatar sm green">EW</span>
+                      <span class="avatar sm purple">SK</span>
+                      <span class="avatar sm purple">MR</span>
+                      <span class="avatar sm blue">RP</span>
+                      <span class="avatar sm more">+10</span>
+                    </span>
+                    <span class="count">14 agents</span>
+                    <button class="add-agent" title="Add agent"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+                  </div>
                   <div><div class="col" style="gap: 4px;"><div class="sla-bar"><span style="width:88%"></span></div><div class="regular-sm">88% on track</div></div></div>
                   <div><button class="btn btn-icon btn-tertiary btn-sm"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></button></div>
                 </div>
               </div>
 
-              <div class="regular-sm" style="margin-top: 8px;">Tip — click a queue to see its full configuration, intents that feed it, team, and at-risk tickets.</div>
+              <div class="regular-sm" style="margin-top: 8px;">Tip — click a team avatar to remove the agent, or use the <b>+</b> button to add one. Click a row to see the queue's full configuration.</div>
             </div>
           </div>
         </div>
@@ -2268,131 +2542,95 @@
           <div class="main">
             <div class="page-header">
               <div class="page-header-title">
-                <div class="back-btn" onclick="goto('routing-overview')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg></div>
+                <div class="back-btn" onclick="goto('queues')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg></div>
                 <h1>Routing</h1>
                 <div class="page-header-actions">
                   <button class="btn">Activity</button>
                 </div>
               </div>
               <div class="page-header-tabs">
-                <div class="tab" onclick="goto('routing-overview')">Overview</div>
-                <div class="tab">Queues</div>
-                <div class="tab active">Signals</div>
-                <div class="tab">Capacity</div>
-                <div class="tab">Activity</div>
+                <div class="tab active">Queues</div>
+                <div class="tab" onclick="goto('agents')">Agents</div>
               </div>
             </div>
 
             <div class="page-body padded">
-              <!-- Small Gaia banner only — full interpretation lives in the panel -->
+              <!-- Gaia banner — change is in flight, see Gaia panel on the right -->
               <div class="copilot-banner">
                 <span class="ai-icon"></span>
-                <div class="copy"><b>Gaia is proposing a change to your signals.</b> 2 edits ready to review — based on your last message in Gaia.</div>
+                <div class="copy"><b>Gaia is proposing a change.</b> A new intent route and 2 agent capacity bumps — review the interpretation in Gaia →</div>
                 <div class="actions">
-                  <button class="btn btn-primary">Review in Gaia →</button>
+                  <button class="btn btn-primary">Review in Gaia</button>
                   <button class="btn">Dismiss</button>
                 </div>
               </div>
 
-              <!-- Priority signals list — actual page content -->
+              <!-- Same queue health summary as Overview — manager stays oriented -->
               <div>
                 <div class="row" style="margin-bottom: 12px;">
-                  <div class="heading-md">Priority signals</div>
-                  <span class="regular-sm" style="margin-left: 8px;">4 active</span>
-                  <button class="btn btn-sm ml-auto"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Add signal</button>
+                  <div class="heading-md">Queue health</div>
+                  <div class="ml-auto row" style="gap: 8px;">
+                    <button class="btn btn-sm">Last 24h</button>
+                    <button class="btn btn-sm" onclick="goto('queues')">See all queues</button>
+                  </div>
                 </div>
                 <div class="data-table">
-                  <div class="data-table-head" style="grid-template-columns: 1.2fr 1.6fr 1fr 0.8fr 100px 40px;">
-                    <div>Signal</div>
-                    <div>What it does</div>
-                    <div>Weight</div>
+                  <div class="data-table-head" style="grid-template-columns: 1.4fr 0.8fr 0.5fr 1.5fr 1.1fr 40px;">
+                    <div>Queue</div>
                     <div>Status</div>
-                    <div>Actions</div>
+                    <div>Live</div>
+                    <div>Team</div>
+                    <div>SLA health (24h)</div>
                     <div></div>
                   </div>
-                  <div class="data-table-row" style="grid-template-columns: 1.2fr 1.6fr 1fr 0.8fr 100px 40px;">
-                    <div class="primary-cell"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>Customer value</div>
-                    <div class="regular-md">Boosts tickets from VIPs and customers with AOV &gt; $300</div>
-                    <div><div class="col" style="gap: 4px;"><div class="sla-bar"><span class="" style="width:85%; background: var(--purple-500);"></span></div><div class="regular-sm">85%</div></div></div>
-                    <div><span class="tag success tag-sm"><span class="dot success"></span>active</span></div>
-                    <div><div class="row" style="gap: 4px;"><button class="btn btn-sm btn-tertiary">Edit</button><button class="btn btn-sm btn-tertiary">Disable</button></div></div>
-                    <div><button class="btn btn-icon btn-tertiary btn-sm"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></button></div>
-                  </div>
-                  <div class="data-table-row" style="grid-template-columns: 1.2fr 1.6fr 1fr 0.8fr 100px 40px;">
-                    <div class="primary-cell"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>SLA risk</div>
-                    <div class="regular-md">Boosts tickets approaching their SLA breach window</div>
-                    <div><div class="col" style="gap: 4px;"><div class="sla-bar"><span style="width:75%; background: var(--purple-500);"></span></div><div class="regular-sm">75%</div></div></div>
-                    <div><span class="tag success tag-sm"><span class="dot success"></span>active</span></div>
-                    <div><div class="row" style="gap: 4px;"><button class="btn btn-sm btn-tertiary">Edit</button><button class="btn btn-sm btn-tertiary">Disable</button></div></div>
-                    <div><button class="btn btn-icon btn-tertiary btn-sm"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></button></div>
-                  </div>
-                  <div class="data-table-row" style="grid-template-columns: 1.2fr 1.6fr 1fr 0.8fr 100px 40px;">
-                    <div class="primary-cell"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>Sentiment</div>
-                    <div class="regular-md">Boosts tickets with frustrated / churn-risk language</div>
-                    <div><div class="col" style="gap: 4px;"><div class="sla-bar"><span style="width:60%; background: var(--purple-500);"></span></div><div class="regular-sm">60%</div></div></div>
-                    <div><span class="tag success tag-sm"><span class="dot success"></span>active</span></div>
-                    <div><div class="row" style="gap: 4px;"><button class="btn btn-sm btn-tertiary">Edit</button><button class="btn btn-sm btn-tertiary">Disable</button></div></div>
-                    <div><button class="btn btn-icon btn-tertiary btn-sm"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></button></div>
-                  </div>
-                  <div class="data-table-row" style="grid-template-columns: 1.2fr 1.6fr 1fr 0.8fr 100px 40px;">
-                    <div class="primary-cell"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg>Channel</div>
-                    <div class="regular-md">Boosts voice and live-chat tickets over async</div>
-                    <div><div class="col" style="gap: 4px;"><div class="sla-bar"><span style="width:50%; background: var(--purple-500);"></span></div><div class="regular-sm">50%</div></div></div>
-                    <div><span class="tag success tag-sm"><span class="dot success"></span>active</span></div>
-                    <div><div class="row" style="gap: 4px;"><button class="btn btn-sm btn-tertiary">Edit</button><button class="btn btn-sm btn-tertiary">Disable</button></div></div>
-                    <div><button class="btn btn-icon btn-tertiary btn-sm"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></button></div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Intent routes — affected by Gaia's proposal -->
-              <div>
-                <div class="row" style="margin-bottom: 12px;">
-                  <div class="heading-md">Intent routes</div>
-                  <span class="regular-sm" style="margin-left: 8px;">7 active</span>
-                  <button class="btn btn-sm ml-auto"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Add intent route</button>
-                </div>
-                <div class="data-table">
-                  <div class="data-table-head" style="grid-template-columns: 120px 1fr 1.2fr 40px;">
-                    <div>Type</div>
-                    <div>Intent</div>
-                    <div>Destination</div>
-                    <div></div>
-                  </div>
-                  <div class="data-table-row" style="grid-template-columns: 120px 1fr 1.2fr 40px;">
+                  <div class="data-table-row" style="grid-template-columns: 1.4fr 0.8fr 0.5fr 1.5fr 1.1fr 40px;" onclick="goto('queues')">
+                    <div class="primary-cell"><div class="avatar sm purple">VS</div>VIP &amp; wholesale</div>
                     <div><span class="tag accent tag-sm">priority</span></div>
-                    <div class="primary-cell">VIP &amp; wholesale orders</div>
-                    <div>VIP &amp; wholesale queue</div>
+                    <div>14</div>
+                    <div class="team-cell">
+                      <span class="avatar-stack">
+                        <span class="avatar sm purple">SK</span>
+                        <span class="avatar sm purple">MR</span>
+                        <span class="avatar sm green">EW</span>
+                        <span class="avatar sm more">+1</span>
+                      </span>
+                      <span class="count">4 senior</span>
+                    </div>
+                    <div><div class="col" style="gap: 4px;"><div class="sla-bar"><span style="width:92%"></span></div><div class="regular-sm">92% on track</div></div></div>
                     <div></div>
                   </div>
-                  <div class="data-table-row" style="grid-template-columns: 120px 1fr 1.2fr 40px; background: var(--surface-accent-default);">
-                    <div><span class="tag accent tag-sm"><span class="dot accent"></span>proposed</span></div>
-                    <div class="primary-cell">Discount &amp; promo questions</div>
-                    <div>Sara K., Marc R. (direct)</div>
-                    <div></div>
-                  </div>
-                  <div class="data-table-row" style="grid-template-columns: 120px 1fr 1.2fr 40px;">
+                  <div class="data-table-row alert" style="grid-template-columns: 1.4fr 0.8fr 0.5fr 1.5fr 1.1fr 40px;" onclick="goto('proactive')">
+                    <div class="primary-cell"><div class="avatar sm green">RT</div>Returns &amp; refunds <span class="tag warning tag-sm">attention</span></div>
                     <div><span class="tag tag-sm">intent</span></div>
-                    <div class="primary-cell">Returns &amp; refunds</div>
-                    <div>Returns &amp; refunds queue</div>
+                    <div>52</div>
+                    <div class="team-cell">
+                      <span class="avatar-stack">
+                        <span class="avatar sm green">EW</span>
+                        <span class="avatar sm blue">RP</span>
+                        <span class="avatar sm pink">TN</span>
+                        <span class="avatar sm amber">JL</span>
+                        <span class="avatar sm more">+2</span>
+                      </span>
+                      <span class="count">6 agents</span>
+                    </div>
+                    <div><div class="col" style="gap: 4px;"><div class="sla-bar"><span class="warning" style="width:68%"></span></div><div style="color: var(--content-warning-default); font-size: 12px;">68% · 30% will breach</div></div></div>
                     <div></div>
                   </div>
-                  <div class="data-table-row" style="grid-template-columns: 120px 1fr 1.2fr 40px;">
-                    <div><span class="tag tag-sm">intent</span></div>
-                    <div class="primary-cell">Shipping &amp; delivery</div>
-                    <div>General support queue</div>
-                    <div></div>
-                  </div>
-                  <div class="data-table-row" style="grid-template-columns: 120px 1fr 1.2fr 40px;">
-                    <div><span class="tag tag-sm">intent</span></div>
-                    <div class="primary-cell">Product info &amp; sizing</div>
-                    <div>General support queue</div>
-                    <div></div>
-                  </div>
-                  <div class="data-table-row" style="grid-template-columns: 120px 1fr 1.2fr 40px;">
+                  <div class="data-table-row" style="grid-template-columns: 1.4fr 0.8fr 0.5fr 1.5fr 1.1fr 40px;">
+                    <div class="primary-cell"><div class="avatar sm blue">GS</div>General support</div>
                     <div><span class="tag tag-sm">fallback</span></div>
-                    <div class="primary-cell">Anything else</div>
-                    <div>General support queue</div>
+                    <div>76</div>
+                    <div class="team-cell">
+                      <span class="avatar-stack">
+                        <span class="avatar sm green">EW</span>
+                        <span class="avatar sm purple">SK</span>
+                        <span class="avatar sm purple">MR</span>
+                        <span class="avatar sm blue">RP</span>
+                        <span class="avatar sm more">+10</span>
+                      </span>
+                      <span class="count">14 agents</span>
+                    </div>
+                    <div><div class="col" style="gap: 4px;"><div class="sla-bar"><span style="width:88%"></span></div><div class="regular-sm">88% on track</div></div></div>
                     <div></div>
                   </div>
                 </div>
@@ -2405,7 +2643,7 @@
             <div class="gaia-header">
               <div class="gaia-spark"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.5 6.5L20 10l-6.5 1.5L12 18l-1.5-6.5L4 10l6.5-1.5z"/></svg></div>
               <div class="title">Gaia</div>
-              <button class="btn btn-icon btn-tertiary btn-sm" onclick="goto('routing-overview')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+              <button class="btn btn-icon btn-tertiary btn-sm" onclick="goto('queues')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
             </div>
             <div class="gaia-body">
               <div class="gaia-msg from-user"><div class="gaia-msg-bubble">Route discount questions to my two senior agents and increase their capacity by 5 tickets</div></div>
@@ -2478,7 +2716,7 @@
           <div class="main">
             <div class="page-header">
               <div class="page-header-title">
-                <div class="back-btn" onclick="goto('routing-overview')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg></div>
+                <div class="back-btn" onclick="goto('queues')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg></div>
                 <h1>Returns &amp; refunds queue</h1>
               </div>
               <div class="page-header-tabs">
@@ -2525,92 +2763,193 @@
                 </div>
               </div>
 
-              <!-- Queue configuration sections -->
-              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-                <!-- Intents feeding this queue -->
-                <div class="card">
-                  <div class="row" style="margin-bottom: 12px;">
-                    <div class="heading-sm">Intents that feed this queue</div>
-                    <button class="btn btn-sm btn-tertiary ml-auto">Edit</button>
-                  </div>
-                  <div class="col" style="gap: 6px;">
-                    <div class="row" style="padding: 6px 0; border-bottom: 1px solid var(--border-neutral-default);">
-                      <span class="tag tag-sm">intent</span>
-                      <span class="medium-md">Returns &amp; refunds</span>
-                      <span class="regular-sm ml-auto">Primary</span>
-                    </div>
-                    <div class="row" style="padding: 6px 0; border-bottom: 1px solid var(--border-neutral-default);">
-                      <span class="tag tag-sm">intent</span>
-                      <span class="medium-md">Refund window exception</span>
-                      <span class="regular-sm ml-auto">Sub-intent</span>
-                    </div>
-                    <div class="row" style="padding: 6px 0;">
-                      <span class="tag tag-sm">intent</span>
-                      <span class="medium-md">Return label issues</span>
-                      <span class="regular-sm ml-auto">Sub-intent</span>
-                    </div>
-                  </div>
+              <!-- ============ FEEDERS — addresses #2 ============ -->
+              <div class="config-block">
+                <div class="config-block-header">
+                  <div class="title">Feeders</div>
+                  <div class="meta">What sends tickets here</div>
+                  <button class="btn btn-sm btn-tertiary">Edit</button>
                 </div>
+                <div class="config-block-desc">Tickets matching any of these arrive in this queue. Mix intents, channels, integrations, and tags.</div>
+                <div class="feeder-list">
+                  <div class="feeder-chip"><span class="type intent">Intent</span>Returns &amp; refunds<span class="remove"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span></div>
+                  <div class="feeder-chip"><span class="type intent">Intent</span>Refund window exception<span class="remove"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span></div>
+                  <div class="feeder-chip"><span class="type intent">Intent</span>Return label issues<span class="remove"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span></div>
+                  <div class="feeder-chip"><span class="type tag">Tag</span>cancel<span class="remove"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span></div>
+                  <div class="feeder-chip"><span class="type integration">Integration</span>Loop Returns<span class="remove"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span></div>
+                  <button class="feeder-add"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Add feeder</button>
+                </div>
+              </div>
 
-                <!-- Capacity for this queue -->
-                <div class="card">
-                  <div class="row" style="margin-bottom: 12px;">
-                    <div class="heading-sm">Capacity rules</div>
-                    <button class="btn btn-sm btn-tertiary ml-auto">Edit</button>
+              <!-- ============ ORDERING SIGNALS — addresses #3, #4 ============ -->
+              <div class="config-block">
+                <div class="config-block-header">
+                  <div class="title">Ordering signals</div>
+                  <div class="meta">How tickets are ranked inside this queue · drag to reorder</div>
+                  <button class="btn btn-sm">Add signal</button>
+                </div>
+                <div class="adaptive-callout">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.5 6.5L20 10l-6.5 1.5L12 18l-1.5-6.5L4 10l6.5-1.5z"/></svg>
+                  <div><b>Gaia adapts these weights to this queue.</b> Here, SLA risk is weighted highest because Returns tickets cluster around their breach window. Customer value is lower because most return requests come from non-VIPs.</div>
+                </div>
+                <div class="signal-list">
+                  <div class="signal-row-new">
+                    <div class="drag"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="6" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="18" r="1"/><circle cx="15" cy="6" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="18" r="1"/></svg></div>
+                    <div class="order">1</div>
+                    <div class="signal-name"><span class="icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>SLA risk</div>
+                    <div class="signal-desc">Tickets approaching breach window</div>
+                    <div class="signal-weight"><div class="bar"><span style="width:90%"></span></div><div class="label">90%</div></div>
+                    <div class="signal-actions"><button class="btn btn-icon btn-tertiary btn-sm"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></button></div>
                   </div>
-                  <div class="col" style="gap: 4px;">
-                    <div class="row" style="padding: 4px 0;"><span class="medium-md">Per agent</span><span class="regular-sm ml-auto">8 concurrent</span></div>
-                    <div class="row" style="padding: 4px 0;"><span class="medium-md">Senior tier</span><span class="regular-sm ml-auto">10 concurrent</span></div>
-                    <div class="row" style="padding: 4px 0;"><span class="medium-md">Assignment</span><span class="regular-sm ml-auto">Push</span></div>
-                    <div class="row" style="padding: 4px 0;"><span class="medium-md">OOO blocking</span><span class="regular-sm ml-auto">On</span></div>
-                    <div class="row" style="padding: 4px 0;"><span class="medium-md">Cherry-pick</span><span class="regular-sm ml-auto">Allowed (backlog)</span></div>
+                  <div class="signal-row-new">
+                    <div class="drag"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="6" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="18" r="1"/><circle cx="15" cy="6" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="18" r="1"/></svg></div>
+                    <div class="order">2</div>
+                    <div class="signal-name"><span class="icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></span>Sentiment</div>
+                    <div class="signal-desc">Frustrated / churn-risk language</div>
+                    <div class="signal-weight"><div class="bar"><span style="width:70%"></span></div><div class="label">70%</div></div>
+                    <div class="signal-actions"><button class="btn btn-icon btn-tertiary btn-sm"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></button></div>
+                  </div>
+                  <div class="signal-row-new">
+                    <div class="drag"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="6" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="18" r="1"/><circle cx="15" cy="6" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="18" r="1"/></svg></div>
+                    <div class="order">3</div>
+                    <div class="signal-name"><span class="icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1l3 6 6 .9-4.5 4.3 1 6.1L12 15.5l-5.5 2.9 1-6.1L3 7.9 9 7z"/></svg></span>Priority tag</div>
+                    <div class="signal-desc">Manual override applied by an agent or merchant</div>
+                    <div class="signal-weight"><div class="bar"><span style="width:60%"></span></div><div class="label">60%</div></div>
+                    <div class="signal-actions"><button class="btn btn-icon btn-tertiary btn-sm"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></button></div>
+                  </div>
+                  <div class="signal-row-new">
+                    <div class="drag"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="6" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="18" r="1"/><circle cx="15" cy="6" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="18" r="1"/></svg></div>
+                    <div class="order">4</div>
+                    <div class="signal-name"><span class="icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span>Customer value</div>
+                    <div class="signal-desc">VIPs and AOV &gt; $300 <span style="color: var(--content-accent-default); font-weight: 600;">· auto-lowered for this queue</span></div>
+                    <div class="signal-weight"><div class="bar"><span style="width:40%"></span></div><div class="label">40% <span style="text-decoration: line-through; color: var(--content-neutral-tertiary);">85%</span></div></div>
+                    <div class="signal-actions"><button class="btn btn-icon btn-tertiary btn-sm"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></button></div>
+                  </div>
+                  <div class="signal-row-new">
+                    <div class="drag"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="6" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="18" r="1"/><circle cx="15" cy="6" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="18" r="1"/></svg></div>
+                    <div class="order">5</div>
+                    <div class="signal-name"><span class="icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg></span>Channel</div>
+                    <div class="signal-desc">Voice &amp; live-chat boosted over async</div>
+                    <div class="signal-weight"><div class="bar"><span style="width:30%"></span></div><div class="label">30%</div></div>
+                    <div class="signal-actions"><button class="btn btn-icon btn-tertiary btn-sm"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></button></div>
                   </div>
                 </div>
               </div>
 
-              <!-- Team for this queue -->
-              <div class="card">
-                <div class="row" style="margin-bottom: 12px;">
-                  <div class="heading-sm">Team (6 agents)</div>
-                  <div class="ml-auto row" style="gap: 8px;">
-                    <button class="btn btn-sm btn-tertiary">Manage team</button>
-                    <button class="btn btn-sm">Add agent</button>
+              <!-- ============ CHANNEL AVAILABILITY — addresses #1 ============ -->
+              <div class="config-block">
+                <div class="config-block-header">
+                  <div class="title">Channel availability</div>
+                  <div class="meta">Which channels this queue handles</div>
+                  <button class="btn btn-sm btn-tertiary">Edit</button>
+                </div>
+                <div class="config-block-desc">Default — available for everything. Restrict if this queue should only handle specific channels (e.g. Voice-only).</div>
+                <div class="channel-row on">
+                  <div class="channel-info">
+                    <div class="channel-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22 6 12 13 2 6"/></svg></div>
+                    <div><div class="name">Email</div><div class="desc">Available</div></div>
+                  </div>
+                  <div class="toggle"></div>
+                </div>
+                <div class="channel-row on">
+                  <div class="channel-info">
+                    <div class="channel-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>
+                    <div><div class="name">Chat</div><div class="desc">Available</div></div>
+                  </div>
+                  <div class="toggle"></div>
+                </div>
+                <div class="channel-row on">
+                  <div class="channel-info">
+                    <div class="channel-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.13.96.37 1.9.72 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.35 1.85.59 2.81.72A2 2 0 0122 16.92z"/></svg></div>
+                    <div><div class="name">Voice</div><div class="desc">Available</div></div>
+                  </div>
+                  <div class="toggle"></div>
+                </div>
+                <div class="channel-row">
+                  <div class="channel-info">
+                    <div class="channel-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg></div>
+                    <div><div class="name">SMS</div><div class="desc">Not yet configured</div></div>
+                  </div>
+                  <div class="toggle"></div>
+                </div>
+                <div class="inline-note" style="margin-top: 12px;">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  Out-of-office behavior needs agent calendars to be connected.
+                  <button class="ml-link">Set up OOO later →</button>
+                </div>
+              </div>
+
+              <!-- ============ AUTO-ASSIGNMENT — addresses #3 ============ -->
+              <div class="config-block">
+                <div class="config-block-header">
+                  <div class="title">Auto-assignment</div>
+                  <div class="meta">How agents in this queue receive work</div>
+                  <button class="btn btn-sm btn-tertiary">Edit</button>
+                </div>
+                <div class="radio-row">
+                  <div class="radio-card selected">
+                    <div class="radio"></div>
+                    <div>
+                      <div class="label">Push</div>
+                      <div class="desc">System assigns the next ticket to the next available agent. Respects their capacity, channels, and status.</div>
+                    </div>
+                  </div>
+                  <div class="radio-card">
+                    <div class="radio"></div>
+                    <div>
+                      <div class="label">Cherry-pick</div>
+                      <div class="desc">Agents pull tickets from the queue themselves. Use for senior teams or low volume.</div>
+                    </div>
                   </div>
                 </div>
+                <div class="inline-note" style="margin-top: 12px;">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
+                  When an assigned agent goes offline or hits their cap, tickets close to SLA are <b>automatically re-routed</b> to another available agent.
+                </div>
+              </div>
+
+              <!-- ============ TEAM — addresses #5 (per-agent channels + load) ============ -->
+              <div class="config-block">
+                <div class="config-block-header">
+                  <div class="title">Team (6 agents)</div>
+                  <div class="meta">Capacity &amp; channels are configured on each agent</div>
+                  <button class="btn btn-sm btn-tertiary" onclick="goto('agents')">Manage in Agents</button>
+                  <button class="btn btn-sm">Add agent</button>
+                </div>
                 <div class="data-table" style="border: none; border-radius: 0;">
-                  <div class="data-table-head" style="grid-template-columns: 1.5fr 1fr 1fr 1fr 100px;">
+                  <div class="data-table-head" style="grid-template-columns: 1.4fr 0.8fr 1fr 1fr 1fr;">
                     <div>Agent</div>
                     <div>Tier</div>
                     <div>Status</div>
-                    <div>Capacity</div>
+                    <div>Channels</div>
                     <div>Active load</div>
                   </div>
-                  <div class="data-table-row" style="grid-template-columns: 1.5fr 1fr 1fr 1fr 100px;">
+                  <div class="data-table-row" style="grid-template-columns: 1.4fr 0.8fr 1fr 1fr 1fr;" onclick="goto('agents')">
                     <div class="primary-cell"><div class="avatar sm green">EW</div>Emma W.</div>
                     <div class="regular-sm">Senior</div>
                     <div><span class="tag success tag-sm"><span class="dot success"></span>Available</span></div>
-                    <div class="regular-sm">10 / agent</div>
+                    <div><span class="ch-chips"><span class="ch on">E</span><span class="ch on">C</span><span class="ch on">V</span><span class="ch">S</span></span></div>
                     <div><div class="col" style="gap: 4px;"><div class="sla-bar"><span style="width:50%; background: var(--green-500);"></span></div><div class="regular-sm">5 of 10</div></div></div>
                   </div>
-                  <div class="data-table-row" style="grid-template-columns: 1.5fr 1fr 1fr 1fr 100px;">
+                  <div class="data-table-row" style="grid-template-columns: 1.4fr 0.8fr 1fr 1fr 1fr;" onclick="goto('agents')">
                     <div class="primary-cell"><div class="avatar sm blue">RP</div>Ryan P.</div>
                     <div class="regular-sm">Standard</div>
                     <div><span class="tag success tag-sm"><span class="dot success"></span>Available</span></div>
-                    <div class="regular-sm">8 / agent</div>
+                    <div><span class="ch-chips"><span class="ch on">E</span><span class="ch on">C</span><span class="ch">V</span><span class="ch">S</span></span></div>
                     <div><div class="col" style="gap: 4px;"><div class="sla-bar"><span class="warning" style="width:88%;"></span></div><div class="regular-sm">7 of 8</div></div></div>
                   </div>
-                  <div class="data-table-row" style="grid-template-columns: 1.5fr 1fr 1fr 1fr 100px;">
+                  <div class="data-table-row" style="grid-template-columns: 1.4fr 0.8fr 1fr 1fr 1fr;" onclick="goto('agents')">
                     <div class="primary-cell"><div class="avatar sm pink">TN</div>Tom N.</div>
                     <div class="regular-sm">Standard</div>
                     <div><span class="tag success tag-sm"><span class="dot success"></span>Available</span></div>
-                    <div class="regular-sm">8 / agent</div>
+                    <div><span class="ch-chips"><span class="ch on">E</span><span class="ch on">C</span><span class="ch on">V</span><span class="ch">S</span></span></div>
                     <div><div class="col" style="gap: 4px;"><div class="sla-bar"><span class="error" style="width:100%;"></span></div><div class="regular-sm">8 of 8 · at cap</div></div></div>
                   </div>
-                  <div class="data-table-row" style="grid-template-columns: 1.5fr 1fr 1fr 1fr 100px;">
+                  <div class="data-table-row" style="grid-template-columns: 1.4fr 0.8fr 1fr 1fr 1fr;" onclick="goto('agents')">
                     <div class="primary-cell"><div class="avatar sm amber">JL</div>Jess L.</div>
                     <div class="regular-sm">Standard</div>
                     <div><span class="tag warning tag-sm"><span class="dot warning"></span>Lunch</span></div>
-                    <div class="regular-sm">8 / agent</div>
+                    <div><span class="ch-chips"><span class="ch on">E</span><span class="ch on">C</span><span class="ch">V</span><span class="ch">S</span></span></div>
                     <div><div class="regular-sm">Paused</div></div>
                   </div>
                 </div>
@@ -2657,7 +2996,7 @@
             <div class="gaia-header">
               <div class="gaia-spark"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.5 6.5L20 10l-6.5 1.5L12 18l-1.5-6.5L4 10l6.5-1.5z"/></svg></div>
               <div class="title">Gaia</div>
-              <button class="btn btn-icon btn-tertiary btn-sm" onclick="goto('routing-overview')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+              <button class="btn btn-icon btn-tertiary btn-sm" onclick="goto('queues')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
             </div>
             <div class="gaia-body" id="proactiveBody">
               <div class="gaia-msg from-gaia"><div class="gaia-msg-bubble"><b>Heads up</b> — Returns &amp; refunds is backing up. Inflow is 3× normal because your Memorial Day promo started at 9:00.</div></div>
@@ -2717,6 +3056,200 @@
   </section>
 
   <!-- ===============================================================
+       SCREEN — AGENTS LIST (Routing > Agents tab)
+       Per-agent capacity, channels, load, status.
+       =============================================================== -->
+  <section class="screen" id="screen-agents" data-screen="agents">
+    <div class="app">
+      <div data-mount="sidebar" data-active="tickets"></div>
+      <div class="main-area">
+        <div class="content-container has-subnav">
+          <div data-mount="tickets-subnav" data-active="routing"></div>
+
+          <div class="main">
+            <div class="page-header">
+              <div class="page-header-title">
+                <h1>Routing</h1>
+                <div class="page-header-actions">
+                  <button class="btn">Activity</button>
+                  <button class="btn btn-primary">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    Invite agent
+                  </button>
+                </div>
+              </div>
+              <div class="page-header-tabs">
+                <div class="tab" onclick="goto('queues')">Queues</div>
+                <div class="tab active">Agents</div>
+              </div>
+              <div class="page-header-count">
+                14 agents · 11 available · 3 on break or OOO
+                <div class="actions">
+                  <button class="btn btn-sm btn-tertiary"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>Filters</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="page-body padded">
+              <!-- Bulk action bar — visible because rows are pre-selected to demo the pattern -->
+              <div class="bulk-bar" id="agentsBulkBar">
+                <div class="count">
+                  <span class="badge">2</span>
+                  agents selected
+                </div>
+                <div class="actions">
+                  <button class="btn-bulk">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/></svg>
+                    Add to queue
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                  </button>
+                  <button class="btn-bulk">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15 9 22 9.5 17 14 18 21 12 17 6 21 7 14 2 9.5 9 9"/></svg>
+                    Set tier
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                  </button>
+                  <button class="btn-bulk">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12c.552 0 1.005.45.95 1A10 10 0 119 2.05c.55-.056 1 .398 1 .95 0 .552-.448.99-.997 1.07A8 8 0 1019.93 13c.08-.55.518-.997 1.07-.997z"/></svg>
+                    Set status
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                  </button>
+                  <button class="btn-bulk">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
+                    Adjust capacity
+                  </button>
+                  <button class="clear">Clear selection</button>
+                </div>
+              </div>
+
+              <!-- Small Gaia banner — context, not an interpretation card -->
+              <div class="copilot-banner">
+                <span class="ai-icon"></span>
+                <div class="copy"><b>Capacity, channels, and queue membership live on the agent.</b> An agent can be in multiple queues — manage assignments inline below, or use bulk actions.</div>
+                <div class="actions">
+                  <button class="btn">Dismiss</button>
+                </div>
+              </div>
+
+              <!-- Agents table with inline controls -->
+              <div class="data-table">
+                <div class="data-table-head" style="grid-template-columns: 32px 1.3fr 0.9fr 1fr 1fr 1.1fr 1.4fr 32px;">
+                  <div><div class="table-checkbox" style="border-color: var(--border-neutral-default);"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="5" y1="12" x2="19" y2="12"/></svg></div></div>
+                  <div>Agent</div>
+                  <div>Tier</div>
+                  <div>Status</div>
+                  <div>Channels</div>
+                  <div>Capacity</div>
+                  <div>Queue membership</div>
+                  <div></div>
+                </div>
+                <div class="data-table-row selected" style="grid-template-columns: 32px 1.3fr 0.9fr 1fr 1fr 1.1fr 1.4fr 32px;">
+                  <div><div class="table-checkbox checked"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div></div>
+                  <div class="primary-cell"><div class="avatar sm green">EW</div>Emma W.</div>
+                  <div><button class="inline-select">Senior <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button></div>
+                  <div><button class="status-select available"><span class="dot success"></span>Available<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button></div>
+                  <div><span class="ch-chips"><span class="ch on">E</span><span class="ch on">C</span><span class="ch on">V</span><span class="ch">S</span></span></div>
+                  <div><div class="col" style="gap: 4px;"><div class="sla-bar"><span style="width:50%; background: var(--green-500);"></span></div><div class="regular-sm">5 of 10 · senior</div></div></div>
+                  <div><div class="queue-chips">
+                    <span class="queue-chip">Returns<span class="remove"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span></span>
+                    <span class="queue-chip">General<span class="remove"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span></span>
+                    <button class="queue-chip-add" title="Add to queue"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+                  </div></div>
+                  <div><button class="btn btn-icon btn-tertiary btn-sm"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></button></div>
+                </div>
+                <div class="data-table-row selected" style="grid-template-columns: 32px 1.3fr 0.9fr 1fr 1fr 1.1fr 1.4fr 32px;">
+                  <div><div class="table-checkbox checked"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div></div>
+                  <div class="primary-cell"><div class="avatar sm purple">SK</div>Sara K.</div>
+                  <div><button class="inline-select">Senior <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button></div>
+                  <div><button class="status-select available"><span class="dot success"></span>Available<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button></div>
+                  <div><span class="ch-chips"><span class="ch on">E</span><span class="ch on">C</span><span class="ch on">V</span><span class="ch">S</span></span></div>
+                  <div><div class="col" style="gap: 4px;"><div class="sla-bar"><span style="width:46%; background: var(--green-500);"></span></div><div class="regular-sm">6 of 13 · custom</div></div></div>
+                  <div><div class="queue-chips">
+                    <span class="queue-chip">VIP<span class="remove"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span></span>
+                    <span class="queue-chip">General<span class="remove"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span></span>
+                    <button class="queue-chip-add" title="Add to queue"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+                  </div></div>
+                  <div><button class="btn btn-icon btn-tertiary btn-sm"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></button></div>
+                </div>
+                <div class="data-table-row" style="grid-template-columns: 32px 1.3fr 0.9fr 1fr 1fr 1.1fr 1.4fr 32px;">
+                  <div><div class="table-checkbox"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div></div>
+                  <div class="primary-cell"><div class="avatar sm purple">MR</div>Marc R.</div>
+                  <div><button class="inline-select">Senior <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button></div>
+                  <div><button class="status-select available"><span class="dot success"></span>Available<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button></div>
+                  <div><span class="ch-chips"><span class="ch on">E</span><span class="ch on">C</span><span class="ch on">V</span><span class="ch">S</span></span></div>
+                  <div><div class="col" style="gap: 4px;"><div class="sla-bar"><span style="width:69%; background: var(--green-500);"></span></div><div class="regular-sm">9 of 13 · custom</div></div></div>
+                  <div><div class="queue-chips">
+                    <span class="queue-chip">VIP<span class="remove"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span></span>
+                    <span class="queue-chip">General<span class="remove"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span></span>
+                    <button class="queue-chip-add" title="Add to queue"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+                  </div></div>
+                  <div><button class="btn btn-icon btn-tertiary btn-sm"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></button></div>
+                </div>
+                <div class="data-table-row" style="grid-template-columns: 32px 1.3fr 0.9fr 1fr 1fr 1.1fr 1.4fr 32px;">
+                  <div><div class="table-checkbox"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div></div>
+                  <div class="primary-cell"><div class="avatar sm blue">RP</div>Ryan P.</div>
+                  <div><button class="inline-select">Standard <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button></div>
+                  <div><button class="status-select available"><span class="dot success"></span>Available<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button></div>
+                  <div><span class="ch-chips"><span class="ch on">E</span><span class="ch on">C</span><span class="ch">V</span><span class="ch">S</span></span></div>
+                  <div><div class="col" style="gap: 4px;"><div class="sla-bar"><span class="warning" style="width:88%;"></span></div><div class="regular-sm">7 of 8</div></div></div>
+                  <div><div class="queue-chips">
+                    <span class="queue-chip">Returns<span class="remove"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span></span>
+                    <span class="queue-chip">General<span class="remove"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span></span>
+                    <button class="queue-chip-add" title="Add to queue"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+                  </div></div>
+                  <div><button class="btn btn-icon btn-tertiary btn-sm"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></button></div>
+                </div>
+                <div class="data-table-row" style="grid-template-columns: 32px 1.3fr 0.9fr 1fr 1fr 1.1fr 1.4fr 32px;">
+                  <div><div class="table-checkbox"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div></div>
+                  <div class="primary-cell"><div class="avatar sm pink">TN</div>Tom N.</div>
+                  <div><button class="inline-select">Standard <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button></div>
+                  <div><button class="status-select available"><span class="dot success"></span>Available<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button></div>
+                  <div><span class="ch-chips"><span class="ch on">E</span><span class="ch on">C</span><span class="ch on">V</span><span class="ch">S</span></span></div>
+                  <div><div class="col" style="gap: 4px;"><div class="sla-bar"><span class="error" style="width:100%;"></span></div><div class="regular-sm">8 of 8 · at cap</div></div></div>
+                  <div><div class="queue-chips">
+                    <span class="queue-chip">Returns<span class="remove"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span></span>
+                    <span class="queue-chip">General<span class="remove"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span></span>
+                    <button class="queue-chip-add" title="Add to queue"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+                  </div></div>
+                  <div><button class="btn btn-icon btn-tertiary btn-sm"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></button></div>
+                </div>
+                <div class="data-table-row" style="grid-template-columns: 32px 1.3fr 0.9fr 1fr 1fr 1.1fr 1.4fr 32px;">
+                  <div><div class="table-checkbox"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div></div>
+                  <div class="primary-cell"><div class="avatar sm amber">JL</div>Jess L.</div>
+                  <div><button class="inline-select">Standard <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button></div>
+                  <div><button class="status-select away"><span class="dot warning"></span>Lunch · 12m<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button></div>
+                  <div><span class="ch-chips"><span class="ch on">E</span><span class="ch on">C</span><span class="ch">V</span><span class="ch">S</span></span></div>
+                  <div class="regular-sm">Paused (auto-resume)</div>
+                  <div><div class="queue-chips">
+                    <span class="queue-chip">Returns<span class="remove"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span></span>
+                    <span class="queue-chip">General<span class="remove"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span></span>
+                    <button class="queue-chip-add" title="Add to queue"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+                  </div></div>
+                  <div><button class="btn btn-icon btn-tertiary btn-sm"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></button></div>
+                </div>
+                <div class="data-table-row" style="grid-template-columns: 32px 1.3fr 0.9fr 1fr 1fr 1.1fr 1.4fr 32px;">
+                  <div></div>
+                  <div class="primary-cell"><div class="avatar sm gray">+8</div>8 more agents</div>
+                  <div class="regular-sm">Mixed</div>
+                  <div class="regular-sm">5 available · 3 OOO</div>
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                </div>
+              </div>
+
+              <div class="inline-note" style="margin-top: 16px;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10"/></svg>
+                <b>Channels:</b> <span class="ch-chips" style="display: inline-flex; margin: 0 4px;"><span class="ch on">E</span></span> Email · <span class="ch-chips" style="display: inline-flex; margin: 0 4px;"><span class="ch on">C</span></span> Chat · <span class="ch-chips" style="display: inline-flex; margin: 0 4px;"><span class="ch on">V</span></span> Voice · <span class="ch-chips" style="display: inline-flex; margin: 0 4px;"><span class="ch on">S</span></span> SMS. When an agent changes status, in-flight short-SLA tickets re-route automatically.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===============================================================
        SCREEN 6 — BREACHED TICKET (Tickets > Inbox, with handover briefing)
        =============================================================== -->
   <section class="screen" id="screen-ticket" data-screen="ticket">
@@ -2752,7 +3285,7 @@
               <div class="subnav-item"><span class="ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 3H6a2 2 0 00-2 2v14a2 2 0 002 2h12a2 2 0 002-2v-7"/><circle cx="18" cy="5" r="3"/></svg></span>Rules</div>
               <div class="subnav-item"><span class="ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></span>Macros</div>
               <div class="subnav-item"><span class="ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg></span>SLAs</div>
-              <div class="subnav-item" onclick="goto('routing-overview')"><span class="ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/></svg></span>Routing</div>
+              <div class="subnav-item" onclick="goto('queues')"><span class="ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/></svg></span>Routing</div>
             </div>
           </aside>
 
@@ -2903,7 +3436,7 @@
 </div>
 
 <script>
-  const ORDER = ['intro', 'ai-onboarding', 'routing-onboarding', 'routing-overview', 'queues', 'proactive', 'spike', 'ticket'];
+  const ORDER = ['intro', 'ai-onboarding', 'routing-onboarding', 'queues', 'proactive', 'agents', 'spike', 'ticket'];
 
   // Mount sidebar template into each screen
   function mountSidebars() {
